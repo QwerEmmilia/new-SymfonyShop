@@ -1,0 +1,40 @@
+.order-block {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.order-block h2 {
+    margin: 0;
+}
+
+/* Стилі для списку товарів */
+.product-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.product-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.product-item img {
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+}
+
+.product-details {
+    flex-grow: 1;
+}
+
+.product-details h3 {
+    margin: 0;
+}
+
+.product-details p {
+    margin: 0;
+    color: #666;
+}

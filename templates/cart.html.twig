@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+    {% include 'header.html.twig' %}
+{% endblock %}
+
+{% block body %}
+
+    {% if cart is empty %}
+        <p>Кошик порожній</p>
+    {% else %}
+        <div class="cart-container">
+            <div class="cart-items">
+                <ul>
+                    {% for goods in cart %}
+                        <li class="cart-item">
+                            <img src="{{ goods.image }}" alt="{{ goods.name }}" class="product-image">
+                            <div class="product-details">
+                                <h3 class="product-title">{{ goods.name }}</h3>
+                                <p class="product-price">{{ goods.price }}</p>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="cart-summary">
+                <h2>Оформлення товару</h2>
+                <p>Опис товару, додаткові деталі та інформація про оформлення.</p>
+            </div>
+        </div>
+    {% endif %}
+
+
+{% endblock %}
+
+
+{% block footer %}
+    {% include 'footer.html.twig' %}
+{% endblock %}
