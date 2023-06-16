@@ -10,14 +10,15 @@
 
     {% for order in orders %}
         <div class="order-block">
-            <h2>Замовлення №{{ order.number }}</h2>
+            <h2>Замовлення №{{ order.orderNumber }}</h2>
             <ul class="product-list">
-                {% for product in order.products %}
+                {% for orderDetail in order.orderDetails %}
                     <li class="product-item">
-                        <img src="{{ product.image }}" alt="{{ product.name }}">
+                        {% set goods = orderDetail.goodsId %}
+                        <img src="{{ goods.image }}" alt="{{ goods.name }}">
                         <div class="product-details">
-                            <h3>{{ product.name }}</h3>
-                            <p>Ціна: {{ product.price }}</p>
+                            <h3>{{ goods.name }}</h3>
+                            <p>Ціна: {{ goods.price }}</p>
                         </div>
                     </li>
                 {% endfor %}

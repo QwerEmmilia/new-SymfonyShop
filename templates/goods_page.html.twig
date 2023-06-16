@@ -49,15 +49,12 @@
                     <div class="size-pill">M</div>
                     <div class="size-pill">L</div>
                 </div>
-                <turbo-frame id="buy-button-turbo">
-                    <form class="add-to-cart" action="{{ path('app_to_cart') }}" method="post">
-                        <input type="hidden" name="goods_id" value="{{ goods.id }}">
-                        <button type="submit" class="add-to-cart-btn"><i class='bx bx-shopping-bag'></i> Додати у кошик</button>
-                    </form>
-                </turbo-frame>
-                <div>
-
-                </div>
+                    <turbo-frame id="buy-button-turbo">
+                        <form class="add-to-cart" action="{{ path('app_to_cart') }}" method="post">
+                            <input type="hidden" name="goods_id" value="{{ goods.id }}">
+                            <button type="submit" class="add-to-cart-btn"><i class='bx bx-shopping-bag'></i> Додати у кошик</button>
+                        </form>
+                    </turbo-frame>
             </div>
         </div>
         <div class="additional-info">

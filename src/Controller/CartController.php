@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Goods;
+use App\Entity\Order;
+use App\Entity\OrderDetails;
 use Doctrine\ORM\EntityManagerInterface;
-
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,20 +24,35 @@ class CartController extends AbstractController
     public function addToCart(Request $request, SessionInterface $session): Response {
 
         $goodsId = $request->request->get('goods_id');
-
         $goods = $this->entityManager->getRepository(Goods::class)->find($goodsId);
 
         $cart = $session->get('cart', []);
 
-        $cart[] = $goods;
+        $cartItem = [
+            'id' => $goods->getId(),
+            'name' => $goods->getName(),
+            'description' => $goods->getDescription(),
+            'price' => $goods->getPrice(),
+            'sizes' => $goods->getSizes(),
+            'image' => $goods->getImage(),
+            ];
+
+        $cart[] = $cartItem;
 
         $session->set('cart', $cart);
 
-        $this->addFlash('success', 'Vote counted!');
-
         return $this->redirectToRoute('app_goodsPage', [
-            'slug' => $goods->getSlug()
+            'slug' => $goods->getSlug(),
         ]);
+    }
+
+    #[Route('/clear', name: 'app_clear_cart', methods: ['POST'])]
+    public function clearCart(SessionInterface $session): Response {
+
+        $session->clear();
+
+        return $this->redirectToRoute('app_cart');
+
     }
 
     #[Route('/cart', name: 'app_cart')]
@@ -47,12 +64,38 @@ class CartController extends AbstractController
         ]);
     }
 
-    #[Route('/clear', name: 'clear_cart', methods: ['POST'])]
-    public function clearCart(SessionInterface $session): Response {
+    #[Route('/place_order', name: 'app_place_order', methods: ['POST'])]
+    public function placeOrder(SessionInterface $session): Response {
+
+        $cart = $session->get('cart', []);
+
+        $totalAmount = 0;
+
+        $newOrder = new Order();
+        $newOrder->setOrderNumber(uniqid());
+
+        foreach ($cart as $item) {
+            $goods = $this->entityManager->getRepository(Goods::class)->find($item['id']);
+
+            $totalAmount += $item['price'];
+
+            $newOrderDetails = new OrderDetails();
+
+            $newOrderDetails->setOrderId($newOrder);
+            $newOrderDetails->setGoodsId($goods);
+
+            $this->entityManager->persist($newOrderDetails);
+        }
+
+        $newOrder->setTotalAmount($totalAmount);
+        $newOrder->setOrderDate(new DateTime());
+
+
+        $this->entityManager->persist($newOrder);
+        $this->entityManager->flush();
 
         $session->clear();
 
         return $this->redirectToRoute('app_cart');
-
     }
 }

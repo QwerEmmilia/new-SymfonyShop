@@ -17,6 +17,4 @@ return [
     Symfony\UX\Turbo\TurboBundle::class => ['all' => true],
     BabDev\PagerfantaBundle\BabDevPagerfantaBundle::class => ['all' => true],
     Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle::class => ['all' => true],
-    Symfony\Bundle\MercureBundle\MercureBundle::class => ['all' => true],
-    Symfony\UX\Notify\NotifyBundle::class => ['all' => true],
 ];
