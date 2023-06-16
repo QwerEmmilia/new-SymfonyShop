@@ -47,20 +47,33 @@ class CartController extends AbstractController
     }
 
     #[Route('/clear', name: 'app_clear_cart', methods: ['POST'])]
-    public function clearCart(SessionInterface $session): Response {
+    public function clearCart(Request $request,SessionInterface $session): Response {
+        $goodsId = $request->request->get('goods_id');
 
-        $session->clear();
+        $cart = $session->get('cart', []);
+
+        if (array_key_exists($goodsId, $cart)) {
+            unset($cart[$goodsId]);
+        }
+
+        $session->set('cart', $cart);
 
         return $this->redirectToRoute('app_cart');
-
     }
 
     #[Route('/cart', name: 'app_cart')]
     public function cart(SessionInterface $session): Response {
         $cart = $session->get('cart', []);
+        $totalAmounts = 0;
+
+        foreach ($cart as $item) {
+
+            $totalAmounts += $item['price'];
+        }
 
         return $this->render('cart.html.twig',[
             'cart' => $cart,
+            'totalAmounts' => $totalAmounts,
         ]);
     }
 
@@ -96,6 +109,6 @@ class CartController extends AbstractController
 
         $session->clear();
 
-        return $this->redirectToRoute('app_cart');
+        return $this->redirectToRoute('app_order');
     }
 }

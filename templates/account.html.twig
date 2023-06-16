@@ -5,10 +5,9 @@
 {% endblock %}
 
 {% block body %}
+    <h1 class="mt-5">Історія покупок</h1>
 
-    <h1>Історія покупок</h1>
-
-    {% for order in orders %}
+    {% for order in orders|reverse %}
         <div class="order-block">
             <h2>Замовлення №{{ order.orderNumber }}</h2>
             <ul class="product-list">
@@ -25,7 +24,6 @@
             </ul>
         </div>
     {% endfor %}
-
 {% endblock %}
 
 {% block footer %}

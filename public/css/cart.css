@@ -126,20 +126,21 @@
     justify-content: space-between;
 }
 .cart-summary {
-    flex: 0 0 600px;
-    padding: 20px;
+    flex: 0 0 500px;
+    padding: 70px;
     background-color: rgba(126, 126, 126, 0.13);
 }
 
 .total-amount {
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
+    margin-top: 100px;
+    margin-bottom: 20px;
     font-weight: bold;
 }
 
 .total-text {
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .total-price {
@@ -154,17 +155,7 @@
     font-weight: bold;
     border: none;
     cursor: pointer;
-}
-
-
-.order-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #000000;
-    color: white;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
+    text-transform: uppercase;
 }
 
 .cart-header {
@@ -199,6 +190,22 @@
 
 .cart-items-count span {
     margin-left: 10px;
+}
+
+.description-cart-order-p {
+    font-size: 13px;
+
+}
+
+.description-cart-order {
+    margin-top: 10%;
+    color: rgba(0, 0, 0, 0.72);
+}
+
+.svg-visa-mastercard {
+    width: 20%;
+    margin-top: 15px;
+    margin-bottom: 30px;
 }
 
 
