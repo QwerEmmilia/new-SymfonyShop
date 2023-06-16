@@ -5,47 +5,68 @@
 {% endblock %}
 
 {% block body %}
-<div class="container-fluid mt-5">
-    {% if cart is empty %}
-        <p>Кошик порожній</p>
-    {% else %}
-        <div class="cart-container">
-            <div class="cart-items">
-                <ul>
-                    {% for goods in cart %}
-                        <li class="cart-item">
-                            <img src="{{ goods.image }}" alt="{{ goods.name }}" class="product-image">
-                            <div class="product-details">
-                                <h3 class="product-title">{{ goods.name }}</h3>
-                                <p class="product-price">{{ goods.price }}</p>
-                                <turbo-frame id="clear-goods-turbo">
-                                    <form class="delete-to-goods" action="{{ path('app_clear_cart')}}" method="post">
+<div class="main-cart-container mt-5">
+        {% if cart is empty %}
+            <div class="no-cart">
+                <h2 class="">Ваш кошик порожній</h2>
+                <p class="">Якщо ви впевнені, що сюди щось додавалось, спробуйте увійти
+                    <br>
+                    до свого облікового запису і подивитись там ;)</p>
+                <div class="">
+                    <form class="" action="#">
+                        <button type="submit">Увійти</button>
+                    </form>
+                </div>
+                <a href="{{ path('app_main')}}">Або продовжити купування</a>
+            </div>
+        {% else %}
+
+    <div class="flex-block-cart">
+            <div class="cart-container">
+                <div class="cart-header">
+                    <h2 class="cart-title">Кошик</h2>
+                    <div class="cart-items-count">
+                        <span class="counter-text">Товарів:</span>
+                        <span class="counter">{{ cart|length }}</span>
+                    </div>
+                </div>
+                <div class="cart-items">
+                    <ul>
+                        {% for goods in cart %}
+                            <li class="cart-item">
+                                <img src="{{ goods.image }}" alt="{{ goods.name }}" class="product-image">
+                                <div class="product-details-cart">
+                                    <h3 class="product-title-cart">{{ goods.name }}</h3>
+                                    <form class="delete-form">
                                         <input type="hidden" name="goods_id" value="{{ goods.id }}">
-                                        <button type="submit"></button>
+                                        <button type="submit"><i class='bx bxs-trash'></i></button>
                                     </form>
-                                </turbo-frame>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
+
+                                    <p class="product-attribute">Розмір: M</p>
+                                    <p class="product-attribute">Колір: black</p>
+                                    <p class="product-price-cart">{{ goods.price }} USD</p>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
             <div class="cart-summary">
-                <h2>Оформлення товару</h2>
+                    <h2>Оформлення товару</h2>
 
-                <form action="{{ path('app_place_order') }}" method="post">
-                    <button class="order-button" type="submit">Оформити замовлення</button>
-                </form>
+                    <div class="total-amount">
+                        <span class="total-text">Загальна сума:</span>
+                        <span class="total-price">... USD</span>
+                    </div>
 
+                    <form action="{{ path('app_place_order') }}" method="post">
+                        <button class="order-button" type="submit">Оформити замовлення</button>
+                    </form>
 
-                <p>Опис товару, додаткові деталі та інформація про оформлення.</p>
+                    <p>Опис товару, додаткові деталі та інформація про оформлення.</p>
             </div>
-        </div>
-    {% endif %}
+        {% endif %}
+    </div>
 </div>
 
-{% endblock %}
-
-
-{% block footer %}
-    {% include 'footer.html.twig' %}
 {% endblock %}
