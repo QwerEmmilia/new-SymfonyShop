@@ -21,6 +21,9 @@ class OrderDetails
     #[ORM\ManyToOne(inversedBy: 'orderDetails')]
     private ?Goods $goodsId = null;
 
+    #[ORM\Column]
+    private ?int $purchaseQuantity = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -46,6 +49,18 @@ class OrderDetails
     public function setGoodsId(?Goods $goodsId): static
     {
         $this->goodsId = $goodsId;
+
+        return $this;
+    }
+
+    public function getPurchaseQuantity(): ?int
+    {
+        return $this->purchaseQuantity;
+    }
+
+    public function setPurchaseQuantity(int $purchaseQuantity): static
+    {
+        $this->purchaseQuantity = $purchaseQuantity;
 
         return $this;
     }

@@ -44,6 +44,12 @@ class Goods
     #[ORM\OneToMany(mappedBy: 'goodsId', targetEntity: OrderDetails::class)]
     private Collection $orderDetails;
 
+    #[ORM\Column]
+    private ?int $quantity = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $composition = null;
+
     public function __construct()
     {
         $this->orderDetails = new ArrayCollection();
@@ -164,6 +170,30 @@ class Goods
                 $orderDetail->setGoodsId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): static
+    {
+        $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getComposition(): ?string
+    {
+        return $this->composition;
+    }
+
+    public function setComposition(string $composition): static
+    {
+        $this->composition = $composition;
 
         return $this;
     }

@@ -128,6 +128,16 @@
     color: #ffffff;
 }
 
+.add-to-cart-btn-null {
+    padding: 12px 50px;
+    border: none;
+    font-size: 16px;
+    text-transform: uppercase;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.63);
+    color: #ffffff;
+}
+
 .additional-info {
     width: 570px;
     margin-top: 30px;
@@ -181,5 +191,107 @@
   margin-top: 20%;
   margin-bottom: 10%;
 }
+.error-no-goods {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+.error-no-goods .error-popup {
+    background-color: #fff;
+    width: 380px;
+    height: 255px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.error-no-goods .error-icon {
+    text-align: center;
+    color: #ff9900;
+    padding-top: 10px;
+}
+
+.error-no-goods .error-icon i{
+    font-size: 50px;
+}
+
+.error-no-goods .error-message {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.end-error-message {
+    margin-top: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 17px;
+    color: rgba(0, 0, 0, 0.62);
+    border-top: rgba(0, 0, 0, 0.24) 1px solid;
+    text-align: center;
+    cursor: pointer;
+}
+
+.ops {
+    text-align: center;
+}
+
+.success-yes-goods {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+.success-yes-goods .success-popup {
+    background-color: #fff;
+    width: 380px;
+    height: 230px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.success-yes-goods .success-icon {
+    text-align: center;
+    color: #00cb03;
+    padding-top: 10px;
+}
+
+.success-yes-goods .success-icon i{
+    font-size: 50px;
+}
+
+.success-yes-goods .success-message {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.end-success-message {
+    margin-top: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 17px;
+    color: rgba(0, 0, 0, 0.62);
+    border-top: rgba(0, 0, 0, 0.24) 1px solid;
+    text-align: center;
+    cursor: pointer;
+}
+
+.yep {
+    text-align: center;
+}
+
 
 

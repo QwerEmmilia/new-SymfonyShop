@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+    {% include 'header.html.twig' %}
+{% endblock %}
+
+{% block body %}
+    <h4 class="title-order">Замовлення</h4>
+    <div class="container-fluid order-container-fluid">
+        <div class="order-filter">
+            <nav>
+                <label class="filter-label active" >Всі</label>
+                <label class="filter-label">Виконані</label>
+                <label class="filter-label">Скасовані</label>
+                <label class="filter-label">Поточні</label>
+            </nav>
+        </div>
+        <div class="main-order-block">
+            <div class="order-menu">
+                <div class="order-header-item-num">Номер замовлення</div>
+                <div class="order-header-item-date">Дата</div>
+                <div class="order-header-item-quantity">Кількість</div>
+                <div class="order-header-item-price">Загальна ціна</div>
+                <div class="order-header-item-status">Статус</div>
+            </div>
+            {% for order in orders|reverse %}
+                <div class="order-block" onclick="toggleOrderDetails(this)">
+                    <div class="order-header">
+                        <div class="num-date-order">
+                            <p class="order-number">№ {{ order.orderNumber }}</p>
+                            <p class="order-date">{{ order.orderDate|date('d F Y H:i') }}</p>
+                            <p class="quantity-order-all">{{ order.totalQuantity }}</p>
+                            <p class="order-total">{{ order.totalAmount }} USD</p>
+                            <p class="status-order">Виконано</p>
+                            <i class="toggle-arrow fas fa-chevron-up"></i>
+                        </div>
+                    </div>
+                    <div class="order-details">
+                        <ul class="goods-list">
+                            {% for orderDetail in order.orderDetails %}
+                                <li class="goods-item">
+                                    {% set goods = orderDetail.goodsId %}
+                                    <a href="{{ path('app_goodsPage', {'slug': goods.slug }) }}">
+                                        <div class="product-thumbnail">
+                                            <img src="{{ goods.image }}" alt="{{ goods.name }}">
+                                        </div>
+                                    </a>
+                                    <div class="goods-details">
+                                        <div>
+                                            <a class="linkANon" href="{{ path('app_goodsPage', {'slug': goods.slug }) }}">
+                                                <p class="goods-name">{{ goods.name }}</p>
+                                                <p class="goods-code">C5FSDA4-FDS4DA</p>
+                                            </a>
+                                        </div>
+                                        <div class="detail-order">
+                                            <p>Розмір: M</p>
+                                            <p>Колір: black</p>
+                                            <p class="quantity-order">Кількість: {{ orderDetail.purchaseQuantity }}</p>
+                                        </div>
+                                        <div class="quantity-price">
+                                            <p class="price">Ціна: {{ goods.price * orderDetail.purchaseQuantity }} USD</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.order-block').click(function() {
+                var orderBlock = $(this);
+                var orderDetails = orderBlock.find('.order-details');
+                var toggleArrow = orderBlock.find('.toggle-arrow');
+
+                orderDetails.slideToggle();
+
+                toggleArrow.toggleClass('fa-chevron-up fa-chevron-down');
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block footer %}
+    {% include 'footer.html.twig' %}
+{% endblock %}

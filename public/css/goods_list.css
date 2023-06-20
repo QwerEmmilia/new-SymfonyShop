@@ -1,4 +1,4 @@
-.container-fluid {
+.container-fluids {
     display: flex;
 }
 
@@ -97,7 +97,7 @@
 
 .good-card img {
     width: 350px;
-    height: auto;
+    height: 478px;
 }
 
 .good-card h4 {
@@ -162,7 +162,7 @@
 }
 
 @media screen and (max-width: 768px) {
-    .container-fluid {
+    .container-fluids {
         flex-wrap: wrap;
     }
 

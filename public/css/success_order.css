@@ -1,0 +1,105 @@
+.success-page {
+    max-width: 600px;
+    margin: 100px auto 100px auto;
+    background-color: #ffffff;
+    padding: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.title-success-order {
+    color: #3cb371;
+}
+
+.order-success-info {
+    color: rgb(0, 0, 0);
+    font-weight: 400;
+    font-size: 14px;
+    text-align: center;
+}
+
+.order-items{
+    display: flex;
+    flex-direction: column-reverse;
+    padding-right: 25px;
+    margin-top: 20px;
+}
+
+.detail-success:not(:last-child)::after {
+    content: "";
+    display: block;
+    border-top: 1px solid #ccc;
+    margin-top: 10px;
+}
+
+.detail-success {
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.success-page .success-icon {
+    font-size: 60px;
+    color: #3cb371;
+    margin-bottom: 20px;
+}
+
+.success-page h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.ty-order {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.success-page .order-details-success {
+    margin-bottom: 30px;
+}
+
+.success-page .order-details .order-info {
+    margin-bottom: 10px;
+}
+
+.success-page .order-details .order-info span {
+    font-weight: bold;
+}
+
+.success-page .order-details .order-items {
+    margin-top: 20px;
+}
+
+.success-page .order-details .order-items table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.success-page .order-details .order-items th,
+.success-page .order-details .order-items td {
+    padding: 10px;
+    border-bottom: 1px solid #dddddd;
+}
+
+.success-page .order-details .order-items th {
+    text-align: left;
+}
+
+.success-page .order-details .order-items .product-image {
+    height: 100px;
+    width: 100px;
+}
+
+.success-page .total-amount-success {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.p-success {
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.44);
+}

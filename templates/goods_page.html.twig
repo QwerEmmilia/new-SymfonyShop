@@ -52,7 +52,37 @@
                     <turbo-frame id="buy-button-turbo">
                         <form class="add-to-cart" action="{{ path('app_to_cart') }}" method="post">
                             <input type="hidden" name="goods_id" value="{{ goods.id }}">
-                            <button type="submit" class="add-to-cart-btn"><i class='bx bx-shopping-bag'></i> Додати у кошик</button>
+                            {% for message in app.flashes('error') %}
+                                <script>document.body.style.overflow = 'hidden';</script>
+                                <div class="error-no-goods" onclick="this.remove(); document.body.style.overflow = 'auto';">
+                                    <div class="error-popup">
+                                        <div class="error-icon">
+                                            <i class='bx bx-error-alt'></i>
+                                        </div>
+                                        <h5 class="ops">Упс!</h5>
+                                        <div class="error-message">{{ message }}</div>
+                                        <div class="end-error-message">Закрити</div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            {% for message in app.flashes('success') %}
+                                <script>document.body.style.overflow = 'hidden';</script>
+                                <div class="success-yes-goods" onclick="this.remove(); document.body.style.overflow = 'auto';">
+                                    <div class="success-popup">
+                                        <div class="success-icon">
+                                            <i class='bx bx-check-circle'></i>
+                                        </div>
+                                        <h5 class="yep">Успіх!</h5>
+                                        <div class="success-message">{{ message }}</div>
+                                        <div class="end-success-message">Закрити</div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            {% if goods.quantity > 0 %}
+                                <button type="submit" class="add-to-cart-btn"><i class='bx bx-shopping-bag'></i> Додати у кошик</button>
+                            {% else %}
+                                <button type="submit" class="add-to-cart-btn-null" disabled>Товару немає в наявності</button>
+                            {% endif %}
                         </form>
                     </turbo-frame>
             </div>
@@ -67,7 +97,7 @@
             <div class="specs-reviews">
                 <h3 class="section-title">Склад і огляд</h3>
                 <div class="section-content">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    <p>{{ goods.getComposition }}</p>
                 </div>
             </div>
         </div>
@@ -109,7 +139,6 @@
     <script src="{{ asset('js/activeOpis.js') }}"></script>
     <script src="{{ asset('js/slickTrack.js') }}"></script>
     <script src="{{ asset('js/goodBuy.js') }}"></script>
-
 
 {% endblock %}
 

@@ -16,12 +16,12 @@ class AccountController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/order', name: 'app_order')]
+    #[Route('/order/history', name: 'app_order')]
     public function order(): Response {
 
         $orders = $this->entityManager->getRepository(Order::class)->findAll();
 
-        return $this->render('account.html.twig',[
+        return $this->render('order_history.html.twig',[
             'orders' => $orders
         ]);
     }

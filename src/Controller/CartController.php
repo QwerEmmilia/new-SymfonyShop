@@ -28,32 +28,56 @@ class CartController extends AbstractController
 
         $cart = $session->get('cart', []);
 
-        $cartItem = [
-            'id' => $goods->getId(),
-            'name' => $goods->getName(),
-            'description' => $goods->getDescription(),
-            'price' => $goods->getPrice(),
-            'sizes' => $goods->getSizes(),
-            'image' => $goods->getImage(),
-            ];
+        $found = false;
+        foreach ($cart as &$item) {
+            if ($item['id'] == $goodsId) {
+                if ($item['quantity'] >= $goods->getQuantity()){
+                    $this->addFlash('error',
+                        "Пробачте, але в нас нема більшої кількості цього товару :(");
+                    return $this->redirectToRoute('app_goodsPage', [
+                        'slug' => $goods->getSlug(),
+                    ]);
+                }
+                $item['quantity']++;
+                $found = true;
+                break;
+            }
+        }
 
-        $cart[] = $cartItem;
+        if (!$found) {
+            $cartItem = [
+                'id' => $goods->getId(),
+                'name' => $goods->getName(),
+                'description' => $goods->getDescription(),
+                'price' => $goods->getPrice(),
+                'sizes' => $goods->getSizes(),
+                'image' => $goods->getImage(),
+                'quantity' => 1,
+                'maxQuantity' => $goods->getQuantity(),
+                ];
+
+            $cart[] = $cartItem;
+        }
 
         $session->set('cart', $cart);
 
+        $this->addFlash('success',
+            "Чудово! Товар було додано до кошика.");
         return $this->redirectToRoute('app_goodsPage', [
             'slug' => $goods->getSlug(),
         ]);
     }
 
-    #[Route('/clear', name: 'app_clear_cart', methods: ['POST'])]
-    public function clearCart(Request $request,SessionInterface $session): Response {
-        $goodsId = $request->request->get('goods_id');
+    #[Route('/clear{id}', name: 'app_clear_cart', methods: ['POST'])]
+    public function clearCart($id,SessionInterface $session): Response {
 
         $cart = $session->get('cart', []);
 
-        if (array_key_exists($goodsId, $cart)) {
-            unset($cart[$goodsId]);
+        foreach ($cart as $key => $item) {
+            if ($item['id'] == $id) {
+                unset($cart[$key]);
+                break;
+            }
         }
 
         $session->set('cart', $cart);
@@ -65,16 +89,46 @@ class CartController extends AbstractController
     public function cart(SessionInterface $session): Response {
         $cart = $session->get('cart', []);
         $totalAmounts = 0;
+        $goodsQuantity = 0;
 
         foreach ($cart as $item) {
-
-            $totalAmounts += $item['price'];
+            $totalAmounts += $item['price'] * $item['quantity'];
+            $goodsQuantity += $item['quantity'];
         }
 
         return $this->render('cart.html.twig',[
             'cart' => $cart,
             'totalAmounts' => $totalAmounts,
+            'goodsQuantity' => $goodsQuantity,
         ]);
+    }
+
+    #[Route('/update_cart/{id}/{action}', name: 'app_update_cart', methods: ['POST'])]
+    public function updateCart($id,$action, SessionInterface $session): Response {
+        $cart = $session->get('cart', []);
+
+        foreach ($cart as $key => &$item) {
+            if ($item['id'] == $id) {
+                if ($action == 'increase') {
+                    if ($item['quantity'] >= $item['maxQuantity']) {
+                        $this->addFlash('error-cart',
+                            "Ви додали максимальну кількість цього товару");
+                        return $this->redirectToRoute('app_cart');
+                    }
+                    $item['quantity']++;
+                } elseif ($action == 'decrease') {
+                    if ($item['quantity'] > 1) {
+                        $item['quantity']--;
+                    } elseif ($item['quantity'] = 1) {
+                        unset($cart[$key]);
+                    }
+                }
+                break;
+            }
+        }
+        $session->set('cart', $cart);
+
+        return $this->redirectToRoute('app_cart');
     }
 
     #[Route('/place_order', name: 'app_place_order', methods: ['POST'])]
@@ -83,23 +137,29 @@ class CartController extends AbstractController
         $cart = $session->get('cart', []);
 
         $totalAmount = 0;
+        $goodsTotal = 0;
 
         $newOrder = new Order();
-        $newOrder->setOrderNumber(uniqid());
+        $newOrder->setOrderNumber(mt_rand(100000, 999999));
 
         foreach ($cart as $item) {
             $goods = $this->entityManager->getRepository(Goods::class)->find($item['id']);
 
-            $totalAmount += $item['price'];
+            $goods->setQuantity($goods->getQuantity() - $item['quantity']);
+
+            $totalAmount += $item['price'] * $item['quantity'];
+            $goodsTotal += $item['quantity'];
 
             $newOrderDetails = new OrderDetails();
 
             $newOrderDetails->setOrderId($newOrder);
             $newOrderDetails->setGoodsId($goods);
+            $newOrderDetails->setPurchaseQuantity($item['quantity']);
 
             $this->entityManager->persist($newOrderDetails);
         }
 
+        $newOrder->setTotalQuantity($goodsTotal);
         $newOrder->setTotalAmount($totalAmount);
         $newOrder->setOrderDate(new DateTime());
 
@@ -109,6 +169,18 @@ class CartController extends AbstractController
 
         $session->clear();
 
-        return $this->redirectToRoute('app_order');
+        return $this->redirectToRoute('app_success_order', [
+        ]);
     }
+
+    #[Route('/successOrder', name: 'app_success_order')]
+    public function successOrder(): Response    {
+
+        $order = $this->entityManager->getRepository(Order::class)->findLastOrder();
+
+        return $this->render('success_order.html.twig',[
+            'order' => $order
+        ]);
+    }
+
 }

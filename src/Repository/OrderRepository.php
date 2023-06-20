@@ -39,6 +39,14 @@ class OrderRepository extends ServiceEntityRepository
         }
     }
 
+    public function findLastOrder(): ?Order {
+        return $this->createQueryBuilder('o')
+            ->orderBy('o.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 //    /**
 //     * @return Order[] Returns an array of Order objects
 //     */
