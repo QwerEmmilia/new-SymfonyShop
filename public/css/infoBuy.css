@@ -1,40 +1,236 @@
-.order-block {
-    border: 1px solid #ccc;
-    padding: 10px;
+.title-order {
+    margin-top: 50px;
+    margin-left: 85px;
+}
+
+.order-container-fluid {
+    display: flex;
+    margin-top: 10px;
+}
+
+.order-filter {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
     margin-bottom: 20px;
+    padding-top: 20px;
+    width: auto;
+    height: 200px;
+    margin-left: 70px;
+    margin-right: 100px;
 }
 
-.order-block h2 {
+.order-filter nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.filter-label {
+    display: block;
+    width: 190px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+    cursor: pointer;
+    padding: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.filter-label:hover {
+    background-color: #f7f7f7;
+}
+
+.filter-label.active {
+    background-color: #f7f7f7;
+    font-weight: bold;
+}
+
+.main-order-block {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-right: 70px;
+    margin-bottom: 10%;
+}
+
+.order-block {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    margin-right: 5%;
+    position: relative;
+    cursor: pointer;
+    content: "";
+    border-bottom: 1px solid rgba(0, 0, 0, 0.55);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.order-menu {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #000000;
+    border-top: 2px solid #000000;
+}
+
+.order-header-item-date,
+.order-header-item-quantity,
+.order-header-item-status,
+.order-header-item-price,
+.order-header-item-num {
+    flex-basis: 20%;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.order-header-item-num,
+.order-header-item-date {
+    padding-left: 9px;
+}
+
+.order-header-item-quantity {
+    padding-left: 10px;
+}
+
+.num-date-order {
+    display: inline-flex;
+    padding-top: 10px;
+}
+
+.order-number {
+    width: 200px;
+    font-size: 16px;
+    font-weight: 500;
+    padding-left: 10px;
+}
+
+.order-date {
+    width: 225px;
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.76);
+    padding-left: 15px;
+    padding-top: 2px;
+}
+
+.toggle-arrow {
+    padding-left: 110px;
+}
+
+.order-total {
+    width: 175px;
+    text-align: right;
+    font-weight: normal;
+    font-size: 15px;
+}
+
+.status-order {
+    text-align: right;
+    font-weight: normal;
+    font-size: 15px;
+    width: 195px;
+}
+
+.order-details {
+    display: none;
+}
+
+.goods-list {
+    list-style: none;
     margin: 0;
-}
-
-/* Стилі для списку товарів */
-.product-list {
-    list-style-type: none;
     padding: 0;
 }
 
-.product-item {
+.goods-item {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
 }
 
-.product-item img {
-    width: 100px;
-    height: 100px;
+.product-thumbnail {
+    width: 120px;
+    height: 140px;
     margin-right: 10px;
+    overflow: hidden;
+    margin-left: 20px;
 }
 
-.product-details {
+.product-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.goods-details {
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.product-details h3 {
-    margin: 0;
+.goods-name {
+    font-size: 14px;
+    text-decoration: none;
+    font-weight: 400;
+    margin-bottom: 0;
 }
 
-.product-details p {
-    margin: 0;
-    color: #666;
+.goods-code {
+    font-size: 12px;
+    font-weight: 300;
+    margin-bottom: 3px;
+}
+
+.price {
+    font-weight: 400;
+    color: #494949;
+    margin-top: 5px;
+    font-size: 13px;
+    padding-right: 10px;
+}
+
+.quantity-order {
+    font-size: 14px;
+    color: #777;
+    margin-top: 5px;
+}
+
+.quantity-order-all {
+    font-size: 14px;
+    color: #777;
+    width: 100px;
+}
+
+.detail-order {
+    font-size: 14px;
+    color: #777;
+    margin-top: 3px;
+}
+
+.detail-order p {
+    margin: 3px 0;
+}
+
+.quantity-price {
+    text-align: right;
+}
+
+.goods-item:not(:last-child)::after {
+    content: "";
+    display: block;
+    border-top: 1px solid #ccc;
+    margin-top: 10px;
+}
+
+.goods-item {
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+    margin-top: 10px;
 }

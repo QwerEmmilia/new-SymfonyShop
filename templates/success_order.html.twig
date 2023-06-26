@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+    {% include 'header.html.twig' %}
+{% endblock %}
+
+{% block body %}
+    <div class="success-page">
+        <div class="success-icon"><i class='bx bx-package'></i></div>
+        <h1 class="title-success-order">Замовлення успішно оформлене</h1>
+        <p class="ty-order">Дякуємо за ваше замовлення! Ось деталі вашого замовлення:</p>
+        <div class="order-details-success">
+            <div class="order-success-info">
+                <span>Номер замовлення: № {{ order.orderNumber }}</span>
+            </div>
+            <div class="order-success-info">
+                <span>Ім'я: John Doe</span>
+            </div>
+            <div class="order-success-info">
+                <span>Телефон: 123-456-7890</span>
+            </div>
+            <div class="order-success-info">
+                <span>Email: johndoe@example.com</span>
+            </div>
+            <div class="order-items">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Товар</th>
+                        <th>Кількість</th>
+                        <th>Розмір</th>
+                    </tr>
+                    </thead>
+                    {% for orderDetail in order.orderDetails %}
+                        <tbody>
+                        {% set goods = orderDetail.goodsId %}
+                        <tr class="detail-success">
+                            <td> <div class="product-name"><p>{{ goods.name }}</p></div>
+                                <img class="product-image" src="{{ goods.image }}" alt="{{ goods.name }}">
+                            </td>
+                            <td>{{ orderDetail.purchaseQuantity }}</td>
+                            <td>{{ orderDetail.size}}</td>
+                        </tr>
+                        </tbody>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="total-amount-success">
+            <span>Загальна сума замовлення:</span>
+            <span> {{ order.totalAmount}} USD</span>
+        </div>
+        <p class="p-success">{{ order.orderDate|date('d F Y H:i') }}</p>
+        <p class="p-success">Кількість товарів в замовленні: {{  order.totalQuantity }}</p>
+
+    </div>
+{% endblock %}
+
+{% block footer %}
+    {% include 'footer.html.twig' %}
+{% endblock %}

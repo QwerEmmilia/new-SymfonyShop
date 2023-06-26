@@ -47,7 +47,7 @@
                             <div class="search-heading"></div>
                             <form>
                                 <div class="search-form-wrapper">
-                                    <input type="text" placeholder="Пошук">
+                                    <input type="text" placeholder="Пошук" >
                                     <button type="submit"><i class="fas fa-search"></i></button>
                                 </div>
                             </form>
@@ -61,12 +61,12 @@
                             </a>
                         </li>
                         <li class="nav-item ml-3">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="{{ path('app_order') }}">
                                 <i class='bx bx-user'></i>
                             </a>
                         </li>
                         <li class="nav-item ml-3">
-                            <a class="nav-link" href="/cart">
+                            <a class="nav-link" href="{{ path('app_cart') }}">
                                 <i class="bx bx-shopping-bag"></i>
                             </a>
                         </li>
@@ -77,4 +77,6 @@
     </header>
 
     <script src="{{ asset('js/searchBar.js') }}"></script>
+    <script>addSearchEventListeners();</script>
+
 {% endblock %}

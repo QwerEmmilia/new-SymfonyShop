@@ -27,7 +27,6 @@
         "symfony/runtime": "6.3.*",
         "symfony/security-bundle": "6.3.*",
         "symfony/twig-bundle": "6.3.*",
-        "symfony/ux-notify": "^2.9",
         "symfony/ux-turbo": "^2.9",
         "symfony/webpack-encore-bundle": "^2.0",
         "symfony/yaml": "6.3.*",

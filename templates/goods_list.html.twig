@@ -6,7 +6,7 @@
 
 {% block body %}
     <h3 class="title-goods">Одяг</h3>
-    <div class="container-fluid">
+    <div class="container-fluids">
         <button id="toggle-filters">Фільтри</button>
         <div class="sidebar" id="sidebar">
             <div class="filters" id="filters">
@@ -62,7 +62,7 @@
                                                 <div class="good-card" data-id="{{ goods.id }}">
                                                     <img src="{{ goods.image }}" alt="{{ goods.name }}">
                                                     <h4 class="product-title">{{ goods.name }}</h4>
-                                                    <p class="price">{{ goods.price }}</p>
+                                                    <p class="price">{{ goods.price }} USD</p>
                                                 </div>
                                             </a>
                                          </div>
