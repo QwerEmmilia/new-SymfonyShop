@@ -21,37 +21,21 @@
             <div class="product-info">
                 <h2 class="product-title">{{ goods.getName }}</h2>
                 <p class="product-price">{{ goods.getPrice }} USD</p>
-
-                <div class="product-colors">
-                    <p>Колір</p>
-                    <button class="color-option active">
-                        <img src="{{ asset('img/output-onlinepngtools.png') }}" alt="Color 1" class="color-square">
-                    </button>
-                    <button class="color-option">
-                        <img src="{{ asset('img/output-onlinepngtools (1).png') }}" alt="Color 2" class="color-square">
-                    </button>
-                    <button class="color-option">
-                        <img src="{{ asset('img/output-onlinepngtools (2).png') }}" alt="Color 3" class="color-square">
-                    </button>
-                    <button class="color-option">
-                        <img src="{{ asset('img/output-onlinepngtools (2).png') }}" alt="Color 3" class="color-square">
-                    </button>
-                    <button class="color-option">
-                        <img src="{{ asset('img/output-onlinepngtools (2).png') }}" alt="Color 3" class="color-square">
-                    </button>
-                    <button class="color-option">
-                        <img src="{{ asset('img/output-onlinepngtools (2).png') }}" alt="Color 3" class="color-square">
-                    </button>
-                </div>
-                <div class="product-sizes">
-                    <p>Розмір</p>
-                    <div class="size-pill">S</div>
-                    <div class="size-pill">M</div>
-                    <div class="size-pill">L</div>
-                </div>
-                    <turbo-frame id="buy-button-turbo">
-                        <form class="add-to-cart" action="{{ path('app_to_cart') }}" method="post">
+                <turbo-frame id="buy-button-turbo">
+                    <div class="product-sizes">
+                        <p>Розмір</p>
+                        {% for goodsSize in goods.getGoodsSizes %}
+                            {% if goodsSize.getSizeId is not null %}
+                                {% set size = goodsSize.getSizeId.getSize %}
+                                {% set quantity = goodsSize.getQuantity %}
+                                <div {% if quantity == 0 %}class="size-pill-null" {% elseif quantity > 0 %}class="size-pill" {% endif %} data-size-id="{{ goodsSize.getSizeId.id }}">{{ size }}</div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <script>addSizePillEventListeners();</script>
+                        <form class="add-to-cart" action="{{ path('app_to_cart') }}" method="post" onsubmit="return validateSizeSelection()">
                             <input type="hidden" name="goods_id" value="{{ goods.id }}">
+                            <input type="hidden" name="size_id" id="size_id" value="">
                             {% for message in app.flashes('error') %}
                                 <script>document.body.style.overflow = 'hidden';</script>
                                 <div class="error-no-goods" onclick="this.remove(); document.body.style.overflow = 'auto';">
@@ -78,8 +62,8 @@
                                     </div>
                                 </div>
                             {% endfor %}
-                            {% if goods.quantity > 0 %}
-                                <button type="submit" class="add-to-cart-btn"><i class='bx bx-shopping-bag'></i> Додати у кошик</button>
+                            {% if hasAvailableSizes %}
+                                <button type="submit" class="add-to-cart-btn" id="add-to-cart-btn"><i class='bx bx-shopping-bag'></i> Додати у кошик</button>
                             {% else %}
                                 <button type="submit" class="add-to-cart-btn-null" disabled>Товару немає в наявності</button>
                             {% endif %}
@@ -116,29 +100,19 @@
                     </div>
                 </a>
             {% endfor %}
-
-
-
             <button class="custom-prev-btn"><i class='bx bx-chevron-right bx-flip-horizontal'></i></button>
             <button class="custom-next-btn"><i class='bx bx-chevron-right bx-flip-vertical'></i></button>
         </div>
     </div>
 
-
-
-
-
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.lazy/1.7.10/jquery.lazy.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.lazy/1.7.10/jquery.lazy.plugins.min.js"></script>
     <script src="{{ asset('js/slick-1.8.1/slick/slick.min.js') }}"></script>
-    <script src="{{ asset('js/goodsSlider.js') }}"></script>
-    <script src="{{ asset('js/activeColor.js') }}"></script>
     <script src="{{ asset('js/activeSizes.js') }}"></script>
+    <script src="{{ asset('js/goodsSlider.js') }}"></script>
     <script src="{{ asset('js/activeOpis.js') }}"></script>
     <script src="{{ asset('js/slickTrack.js') }}"></script>
     <script src="{{ asset('js/goodBuy.js') }}"></script>
+    <script>addSizePillEventListeners();</script>
 
 {% endblock %}
 

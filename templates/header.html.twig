@@ -47,7 +47,7 @@
                             <div class="search-heading"></div>
                             <form>
                                 <div class="search-form-wrapper">
-                                    <input type="text" placeholder="Пошук">
+                                    <input type="text" placeholder="Пошук" >
                                     <button type="submit"><i class="fas fa-search"></i></button>
                                 </div>
                             </form>
@@ -77,4 +77,6 @@
     </header>
 
     <script src="{{ asset('js/searchBar.js') }}"></script>
+    <script>addSearchEventListeners();</script>
+
 {% endblock %}

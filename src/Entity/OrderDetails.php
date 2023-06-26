@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\OrderDetailsRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
+use Doctrine\Common\Collections\Collection;
+
 
 #[ORM\Entity(repositoryClass: OrderDetailsRepository::class)]
 #[Broadcast]
@@ -21,8 +23,14 @@ class OrderDetails
     #[ORM\ManyToOne(inversedBy: 'orderDetails')]
     private ?Goods $goodsId = null;
 
+    #[ORM\ManyToOne(inversedBy: 'orderDetails')]
+    private ?GoodsSize $goodsSizeId = null;
+
     #[ORM\Column]
     private ?int $purchaseQuantity = null;
+
+    #[ORM\Column(length: 10)]
+    private ?string $size = null;
 
     public function getId(): ?int
     {
@@ -53,6 +61,18 @@ class OrderDetails
         return $this;
     }
 
+    public function getGoodsSizeId(): ?GoodsSize
+    {
+        return $this->goodsSizeId;
+    }
+
+    public function setGoodsSizeId(?GoodsSize $goodsSizeId): static
+    {
+        $this->goodsSizeId = $goodsSizeId;
+
+        return $this;
+    }
+
     public function getPurchaseQuantity(): ?int
     {
         return $this->purchaseQuantity;
@@ -61,6 +81,18 @@ class OrderDetails
     public function setPurchaseQuantity(int $purchaseQuantity): static
     {
         $this->purchaseQuantity = $purchaseQuantity;
+
+        return $this;
+    }
+
+    public function getSize(): ?string
+    {
+        return $this->size;
+    }
+
+    public function setSize(string $size): static
+    {
+        $this->size = $size;
 
         return $this;
     }

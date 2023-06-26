@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Goods;
+use App\Entity\GoodsSize;
 use App\Entity\Order;
 use App\Entity\OrderDetails;
+use App\Entity\Size;
 use Doctrine\ORM\EntityManagerInterface;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,14 +26,15 @@ class CartController extends AbstractController
     public function addToCart(Request $request, SessionInterface $session): Response {
 
         $goodsId = $request->request->get('goods_id');
+        $sizeId = $request->request->get('size_id');
         $goods = $this->entityManager->getRepository(Goods::class)->find($goodsId);
 
         $cart = $session->get('cart', []);
 
         $found = false;
         foreach ($cart as &$item) {
-            if ($item['id'] == $goodsId) {
-                if ($item['quantity'] >= $goods->getQuantity()){
+            if ($item['id'] == $goodsId && $item['sizeId'] == $sizeId ) {
+                if ($item['quantity'] >= $item['maxQuantity']){
                     $this->addFlash('error',
                         "Пробачте, але в нас нема більшої кількості цього товару :(");
                     return $this->redirectToRoute('app_goodsPage', [
@@ -45,18 +48,24 @@ class CartController extends AbstractController
         }
 
         if (!$found) {
-            $cartItem = [
-                'id' => $goods->getId(),
-                'name' => $goods->getName(),
-                'description' => $goods->getDescription(),
-                'price' => $goods->getPrice(),
-                'sizes' => $goods->getSizes(),
-                'image' => $goods->getImage(),
-                'quantity' => 1,
-                'maxQuantity' => $goods->getQuantity(),
-                ];
+            foreach ($goods->getGoodsSizes() as $goodsSize) {
+                if ($goodsSize->getSizeId()->getId() == $sizeId) {
+                    $cartItem = [
+                        'id' => $goods->getId(),
+                        'name' => $goods->getName(),
+                        'description' => $goods->getDescription(),
+                        'price' => $goods->getPrice(),
+                        'sizeId' => $sizeId,
+                        'sizes' => $goodsSize->getSizeId()->getSize(),
+                        'image' => $goods->getImage(),
+                        'quantity' => 1,
+                        'maxQuantity' => $goodsSize->getQuantity(),
+                    ];
 
-            $cart[] = $cartItem;
+                    $cart[] = $cartItem;
+                    break;
+                }
+            }
         }
 
         $session->set('cart', $cart);
@@ -95,7 +104,6 @@ class CartController extends AbstractController
             $totalAmounts += $item['price'] * $item['quantity'];
             $goodsQuantity += $item['quantity'];
         }
-
         return $this->render('cart.html.twig',[
             'cart' => $cart,
             'totalAmounts' => $totalAmounts,
@@ -103,33 +111,37 @@ class CartController extends AbstractController
         ]);
     }
 
-    #[Route('/update_cart/{id}/{action}', name: 'app_update_cart', methods: ['POST'])]
-    public function updateCart($id,$action, SessionInterface $session): Response {
+    #[Route('/update_cart/{action}', name: 'app_update_cart', methods: ['POST'])]
+    public function updateCart($action, Request $request, SessionInterface $session): Response
+    {
+        $goodsId = $request->request->get('goods_id');
+        $sizeId = $request->request->get('size_id');
         $cart = $session->get('cart', []);
 
         foreach ($cart as $key => &$item) {
-            if ($item['id'] == $id) {
+            if ($item['id'] == $goodsId && $item['sizeId'] == $sizeId) {
                 if ($action == 'increase') {
                     if ($item['quantity'] >= $item['maxQuantity']) {
-                        $this->addFlash('error-cart',
-                            "Ви додали максимальну кількість цього товару");
+                        $this->addFlash('error-cart', "Ви додали максимальну кількість цього товару");
                         return $this->redirectToRoute('app_cart');
                     }
                     $item['quantity']++;
                 } elseif ($action == 'decrease') {
                     if ($item['quantity'] > 1) {
                         $item['quantity']--;
-                    } elseif ($item['quantity'] = 1) {
+                    } elseif ($item['quantity'] == 1) {
                         unset($cart[$key]);
                     }
                 }
                 break;
             }
         }
+
         $session->set('cart', $cart);
 
         return $this->redirectToRoute('app_cart');
     }
+
 
     #[Route('/place_order', name: 'app_place_order', methods: ['POST'])]
     public function placeOrder(SessionInterface $session): Response {
@@ -144,8 +156,20 @@ class CartController extends AbstractController
 
         foreach ($cart as $item) {
             $goods = $this->entityManager->getRepository(Goods::class)->find($item['id']);
+            $goodsSize = $this->entityManager->getRepository(GoodsSize::class)->findOneBy([
+                'goodsId' => $item['id'],
+                'sizeId' => $item['sizeId']
+            ]);
 
-            $goods->setQuantity($goods->getQuantity() - $item['quantity']);
+            if ($goodsSize->getQuantity() < $item['quantity']) {
+                $this->addFlash('error-quantity-cart', 'Пробачте, але більшої кількість товару "'.$item['name'].'" з розміром "'.$item['sizes'].'" немає.');
+                return $this->redirectToRoute('app_cart');
+            }
+
+            if ($goodsSize) {
+                $newQuantity = $goodsSize->getQuantity() - $item['quantity'];
+                $goodsSize->setQuantity($newQuantity);
+            }
 
             $totalAmount += $item['price'] * $item['quantity'];
             $goodsTotal += $item['quantity'];
@@ -155,6 +179,7 @@ class CartController extends AbstractController
             $newOrderDetails->setOrderId($newOrder);
             $newOrderDetails->setGoodsId($goods);
             $newOrderDetails->setPurchaseQuantity($item['quantity']);
+            $newOrderDetails->setSize($item['sizes']);
 
             $this->entityManager->persist($newOrderDetails);
         }
@@ -169,8 +194,7 @@ class CartController extends AbstractController
 
         $session->clear();
 
-        return $this->redirectToRoute('app_success_order', [
-        ]);
+        return $this->redirectToRoute('app_success_order');
     }
 
     #[Route('/successOrder', name: 'app_success_order')]

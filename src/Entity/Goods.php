@@ -32,9 +32,6 @@ class Goods
     private ?string $rating = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $sizes = null;
-
-    #[ORM\Column(length: 255)]
     private ?string $image = null;
 
     #[ORM\Column(length: 100, unique: true)]
@@ -44,15 +41,16 @@ class Goods
     #[ORM\OneToMany(mappedBy: 'goodsId', targetEntity: OrderDetails::class)]
     private Collection $orderDetails;
 
-    #[ORM\Column]
-    private ?int $quantity = null;
-
     #[ORM\Column(length: 255)]
     private ?string $composition = null;
+
+    #[ORM\OneToMany(mappedBy: 'goodsId', targetEntity: GoodsSize::class)]
+    private Collection $goodsSizes;
 
     public function __construct()
     {
         $this->orderDetails = new ArrayCollection();
+        $this->goodsSizes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -104,18 +102,6 @@ class Goods
     public function setRating(?string $rating): self
     {
         $this->rating = $rating;
-
-        return $this;
-    }
-
-    public function getSizes(): ?string
-    {
-        return $this->sizes;
-    }
-
-    public function setSizes(string $sizes): self
-    {
-        $this->sizes = $sizes;
 
         return $this;
     }
@@ -174,18 +160,6 @@ class Goods
         return $this;
     }
 
-    public function getQuantity(): ?int
-    {
-        return $this->quantity;
-    }
-
-    public function setQuantity(int $quantity): static
-    {
-        $this->quantity = $quantity;
-
-        return $this;
-    }
-
     public function getComposition(): ?string
     {
         return $this->composition;
@@ -194,6 +168,36 @@ class Goods
     public function setComposition(string $composition): static
     {
         $this->composition = $composition;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, GoodsSize>
+     */
+    public function getGoodsSizes(): Collection
+    {
+        return $this->goodsSizes;
+    }
+
+    public function addGoodsSize(GoodsSize $goodsSize): static
+    {
+        if (!$this->goodsSizes->contains($goodsSize)) {
+            $this->goodsSizes->add($goodsSize);
+            $goodsSize->setGoodsId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGoodsSize(GoodsSize $goodsSize): static
+    {
+        if ($this->goodsSizes->removeElement($goodsSize)) {
+            // set the owning side to null (unless already changed)
+            if ($goodsSize->getGoodsId() === $this) {
+                $goodsSize->setGoodsId(null);
+            }
+        }
 
         return $this;
     }

@@ -29,7 +29,6 @@
                         <th>Товар</th>
                         <th>Кількість</th>
                         <th>Розмір</th>
-                        <th>Колір</th>
                     </tr>
                     </thead>
                     {% for orderDetail in order.orderDetails %}
@@ -40,8 +39,7 @@
                                 <img class="product-image" src="{{ goods.image }}" alt="{{ goods.name }}">
                             </td>
                             <td>{{ orderDetail.purchaseQuantity }}</td>
-                            <td>M</td>
-                            <td>black</td>
+                            <td>{{ orderDetail.size}}</td>
                         </tr>
                         </tbody>
                     {% endfor %}
@@ -50,7 +48,7 @@
         </div>
         <div class="total-amount-success">
             <span>Загальна сума замовлення:</span>
-            <span> {{ order.totalAmount}}</span>
+            <span> {{ order.totalAmount}} USD</span>
         </div>
         <p class="p-success">{{ order.orderDate|date('d F Y H:i') }}</p>
         <p class="p-success">Кількість товарів в замовленні: {{  order.totalQuantity }}</p>

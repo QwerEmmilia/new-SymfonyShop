@@ -53,33 +53,6 @@
     margin-bottom: 20%;
 }
 
-.product-colors {
-    margin-top: 30px;
-}
-
-.product-colors p {
-    margin-right: 5px;
-    margin-bottom: 5px;
-}
-
-.color-option {
-    display: inline-flex;
-    width: 40px;
-    height: 40px;
-    margin-right: 5px;
-    padding: 0;
-    border: none;
-    background: none;
-    cursor: pointer;
-}
-
-.color-square {
-    width: 30px;
-    height: 30px;
-    display: block;
-    border-radius: 2px;
-}
-
 .product-sizes {
     margin-bottom: 10px;
     margin-top: 25px;
@@ -90,18 +63,20 @@
     margin-bottom: 0;
 }
 
-.color-option img {
-    width: 80%;
-    height: 80%;
-    margin-left: 10%;
-    margin-top: 3px;
-}
-
 .size-pill {
     display: inline-block;
     padding: 7px 15px;
     border: 1px solid #ccc;
     margin-right: 5px;
+}
+
+.size-pill-null {
+    display: inline-block;
+    padding: 7px 15px;
+    border: 1px solid #ccc;
+    margin-right: 5px;
+    text-decoration: line-through;
+    color: #ccc;
 }
 
 .add-to-cart {
@@ -207,7 +182,7 @@
 .error-no-goods .error-popup {
     background-color: #fff;
     width: 380px;
-    height: 255px;
+    height: auto;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
@@ -230,7 +205,6 @@
 .end-error-message {
     margin-top: 20px;
     padding-top: 10px;
-    padding-bottom: 10px;
     font-size: 17px;
     color: rgba(0, 0, 0, 0.62);
     border-top: rgba(0, 0, 0, 0.24) 1px solid;
@@ -293,5 +267,19 @@
     text-align: center;
 }
 
+.shake {
+    animation: shake 0.5s ease-in-out;
+    border: 1px red solid;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-5px); }
+    40% { transform: translateX(5px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+    100% { transform: translateX(0); }
+}
 
 
