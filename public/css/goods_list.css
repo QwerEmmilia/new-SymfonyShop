@@ -2,24 +2,41 @@
     display: flex;
 }
 
-.title-goods {
-    text-align: center;
-    margin-bottom: 10px;
-    margin-top: 55px;
+.route-goods {
+    margin: 50px 0 0 20px;
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.3);
 }
 
+.title-goods {
+    text-align: left;
+    margin: 20px 0 0 20px;
+    font-weight: 450;
+    color: rgba(0, 0, 0, 0.64);
+}
 
 #toggle-filters {
     position: fixed;
-    top: 50%;
+    top: 40%;
     left: 0;
-    transform: translateY(-50%);
     padding: 10px;
-    border: none;
-    border-radius: 0 5px 5px 0;
+    background: black;
+    color: white;
+    border-left: none;
+    border-bottom: #FFFFFF solid 1px;
+    border-top: #FFFFFF solid 1px;
+    border-right: #FFFFFF solid 1px;
     cursor: pointer;
     z-index: 2;
     transition: transform 0.3s;
+}
+
+#toggle-filters.active {
+    background: #ffffff;
+    color: #000000;
+    border-bottom: #000000 solid 1px;
+    border-top: #000000 solid 1px;
+    border-right: #000000 solid 1px;
 }
 
 .sidebar {
@@ -30,7 +47,8 @@
     height: 100%;
     overflow: auto;
     background-color: white;
-    transition: left 0.3s;
+    transition: left 0.29s;
+    border-right: black 1px solid;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -39,21 +57,23 @@
 }
 
 .filter-group ul {
-    margin-top: 100%;
+    margin-top: 150px;
 }
 
 .filter-group ul {
     list-style: none;
+    padding-top: 5px;
 }
 
 .sorting {
     display: flex;
-    justify-content: center; /* Center-align the elements horizontally */
+    justify-content: center;
     align-items: center;
+
 }
 
 .sort-price {
-    margin-left: 10px; /* Add some spacing between the elements */
+    margin-left: 10px;
     margin-right: 10px;
 }
 
@@ -61,13 +81,48 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
-    margin-top: 50px;
 }
 
-.filters li {
-    margin-bottom: 10px;
-    word-wrap: break-word;
+.filter-list {
+    display: none;
+    list-style: none;
+    padding: 0;
+}
+
+.filter-group ul ul {
+    margin-left: 50px;
+    margin-top: 0;
+    font-size: 17px;
+    color: rgba(0, 0, 0, 0.65);
+}
+
+.li-a-menu {
+    margin-bottom: 40px;
+}
+
+.a-menu-filter {
+    font-weight: 500;
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.63);
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    padding-left: 8px;
+    transition: border-width 0.3s;
+}
+
+.a-menu-filter:hover {
+    color: black;
+}
+
+.a-menu-filter.active {
+    color: black;
+    border-left: black 6px solid;
+}
+
+.filter-group ul .filter-list li {
+    display: block;
+    margin-bottom: 5px;
 }
 
 .content {
@@ -76,7 +131,7 @@
 }
 
 .goods {
-    padding: 20px;
+    padding: 0 20px 20px 20px;
     width: 100%;
 }
 
@@ -319,7 +374,7 @@
 .sort-price {
     position: relative;
     margin-right: 10px;
-    margin-left: 0; /* Змінено на margin-left: 0 */
+    margin-left: 0;
     height: 50px;
 }
 

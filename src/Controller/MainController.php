@@ -6,20 +6,25 @@ use App\Entity\Goods;
 use App\Entity\GoodsSize;
 use App\Entity\Size;
 use App\Repository\GoodsRepository;
+use App\Service\CartService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
 
 class MainController extends AbstractController
 {
 
     private $entityManager;
+    private $cartService;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, CartService $cartService)
     {
         $this->entityManager = $entityManager;
+        $this->cartService = $cartService;
     }
 
     #[Route('/', name: 'app_main')]
@@ -32,7 +37,16 @@ class MainController extends AbstractController
         ]);
     }
 
-    #[Route('/goodsPage/{slug}', name: 'app_goodsPage')]
+    #[Route('/header-cart-quantity', name: 'app_header_cart')]
+    public function headerCart(): Response
+    {
+        $cartQuantity = $this->cartService->getCartQuantity();
+        return $this->render('home.html.twig', [
+            'cartQuantity' => $cartQuantity,
+        ]);
+    }
+
+    #[Route('/goods-page/{slug}', name: 'app_goodsPage')]
     public function goodsPage(Goods $goods): Response
     {
         $goodsBD = $this->entityManager->getRepository(Goods::class)->findBy([], ['id' => 'DESC'], 6);
@@ -58,14 +72,18 @@ class MainController extends AbstractController
     {
         $page = $request->query->getInt('page', 1);
         $perPage = 12;
+        $minPrice = $request->query->get('min_price');
+        $maxPrice = $request->query->get('max_price');
 
-        $paginator = $goodsRepository->getGoodsPaginator($page, $perPage);
+        $paginator = $goodsRepository->getGoodsPaginator($page, $perPage, $minPrice, $maxPrice);
 
         return $this->render('goods_list.html.twig', [
             'paginator' => $paginator,
+            'minPrice' => $minPrice,
+            'maxPrice' => $maxPrice,
         ]);
-
     }
+
 
 
 
@@ -77,23 +95,23 @@ class MainController extends AbstractController
     public function newGoods(): Response
     {
         $goods1 = new Goods();
-        $goods1->setName('Футболка Оверсайз Унісекс Black');
+        $goods1->setName('Футболка Оверсайз Унісекс Black2311');
         $goods1->setDescription('lorem fdjsaiofas fwiqenoofnqwe fasjdnflaeeq fdafasd fadafda ffqef f fa');
         $goods1->setComposition('95% бавовна,5% поліестер');
         $goods1->setPrice(10.49);
-        $goods1->setRating(4);
+        $goods1->setRating(5);
         $goods1->setImage('https://i0.wp.com/tabooclothes.com.ua/wp-content/uploads/2023/01/MG_9409-%D0%BA%D0%BE%D0%BF%D0%B8%D1%8F.webp?fit=3050%2C3812&ssl=1');
 
         $goods2 = new Goods();
-        $goods2->setName('Футболка Оверсайз Унісекс Purple');
+        $goods2->setName('Футболка Оверсайз Унісекс Purple2113');
         $goods2->setDescription('lorem fdjsaiofas fwiqeadafda ffqef f fa');
         $goods2->setComposition('94% бавовна,6% поліестер');
         $goods2->setPrice(11);
-        $goods2->setRating(2.5);
+        $goods2->setRating(3.5);
         $goods2->setImage('https://i0.wp.com/tabooclothes.com.ua/wp-content/uploads/2023/01/DSC00249-%D0%BA%D0%BE%D0%BF%D0%B8%D1%8F-2kk.webp?fit=2446%2C3058&ssl=1');
 
         $goods3 = new Goods();
-        $goods3->setName('ФУТБОЛКА SMASH OVERSIZE "STRETCH COTTON" ЧОРНА');
+        $goods3->setName('ФУТБОЛКА SMASH OVERSIZE "STRETCH COTTON" ЧОРНА2113');
         $goods3->setDescription('lorem fdjsaiofas fwiqenoofnqwe fasjdnflaeeq fdafasd jsaiofas fwiqenoofnqwe fasjdnflaeeq fdafasd fadafda ffqef ffadafda ffqef f fa');
         $goods3->setComposition('95% бавовна,5% поліестер');
         $goods3->setPrice(14);
@@ -101,7 +119,7 @@ class MainController extends AbstractController
         $goods3->setImage('https://smash.com.ua/image/cache/catalog/futbolki/strechCoton/1-700x956.jpg');
 
         $goods4 = new Goods();
-        $goods4->setName('ДЖИНСОВА КЕПКА');
+        $goods4->setName('ДЖИНСОВА КЕПКА1213');
         $goods4->setDescription('lorem fdjsaiofas fwiqenoofnqwe fasjdnflaeeq fdafasd fadafda ffqef f fa');
         $goods4->setComposition('95% бавовна,5% поліестер');
         $goods4->setPrice(9.99);
@@ -109,7 +127,7 @@ class MainController extends AbstractController
         $goods4->setImage('https://smash.com.ua/image/cache/catalog/caps/jinceKep/bezj/1-700x956.jpg');
 
         $goods5 = new Goods();
-        $goods5->setName('РЮКЗАК WEROCKER "PAST" ЧОРНИЙ');
+        $goods5->setName('РЮКЗАК WEROCKER "PAST" ЧОРНИЙ2113');
         $goods5->setDescription('lorem fdjsaуцй23w12wiqenoofnавіфафівdasqwe fasjdnflaeeq fdafasd fadafda ffqef f fa');
         $goods5->setComposition(' ');
         $goods5->setPrice(55.50);
@@ -117,11 +135,11 @@ class MainController extends AbstractController
         $goods5->setImage('https://smash.com.ua/image/cache/catalog/Backpacks/past/22-700x956.jpg');
 
         $goods6 = new Goods();
-        $goods6->setName('ПАЛЬТО INFLATION "INTELLIGENCE" СІРЕ');
+        $goods6->setName('ПАЛЬТО INFLATION "INTELLIGENCE" СІРЕ2113');
         $goods6->setDescription('fda');
         $goods6->setComposition('поліефірне волокно 100%');
         $goods6->setPrice(39.99);
-        $goods6->setRating(3);
+        $goods6->setRating(5);
         $goods6->setImage('https://smash.com.ua/image/cache/catalog/kurtki/intelligence/zeroo-700x956.jpg');
 
         $this->entityManager->persist($goods1);
@@ -204,10 +222,12 @@ class MainController extends AbstractController
 
         $goodsSize11 = new GoodsSize();
         $goodsSize11->setGoodsId($goods4);
+        $goodsSize11->setSizeId($sizeM);
         $goodsSize11->setQuantity(23);
 
         $goodsSize12 = new GoodsSize();
         $goodsSize12->setGoodsId($goods5);
+        $goodsSize12->setSizeId($sizeM);
         $goodsSize12->setQuantity(5);
 
         $goodsSize13 = new GoodsSize();

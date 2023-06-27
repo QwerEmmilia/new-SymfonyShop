@@ -41,11 +41,27 @@ class GoodsRepository extends ServiceEntityRepository
         }
     }
 
-    public function getGoodsPaginator($page = 1, $perPage = 10): Pagerfanta
+    public function getGoodsPaginator($page = 1, $perPage = 10, ?float $minPrice = null, ?float $maxPrice = null): Pagerfanta
     {
-        $query = $this->createQueryBuilder('g')
-            ->orderBy('g.id', 'DESC')
-            ->getQuery();
+        $queryBuilder = $this->createQueryBuilder('g')
+            ->orderBy('g.id', 'DESC');
+
+        if ($minPrice !== null && $maxPrice !== null) {
+            $queryBuilder
+                ->andWhere('g.price >= :minPrice')
+                ->andWhere('g.price <= :maxPrice')
+                ->setParameter('minPrice', $minPrice)
+                ->setParameter('maxPrice', $maxPrice);
+        } elseif ($minPrice !== null) {
+            $queryBuilder
+                ->andWhere('g.price >= :minPrice')
+                ->setParameter('minPrice', $minPrice);
+        } elseif ($maxPrice !== null) {
+            $queryBuilder
+                ->andWhere('g.price <= :maxPrice')
+                ->setParameter('maxPrice', $maxPrice);
+        }
+        $query = $queryBuilder->getQuery();
 
         $adapter = new QueryAdapter($query);
         $paginator = new Pagerfanta($adapter);
