@@ -11,6 +11,22 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
+    App\Service\CartService:
+        arguments:
+            $session: '@session'
+
+    App\EventListener\CartQuantityListener:
+        arguments:
+            - '@App\Service\CartService'
+        tags:
+            - { name: kernel.event_listener, event: kernel.view }
+
+    App\Twig\CartExtension:
+      arguments:
+        - '@App\Service\CartService'
+      tags:
+        - { name: twig.extension }
+
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:

@@ -41,10 +41,12 @@ class MainController extends AbstractController
     public function headerCart(): Response
     {
         $cartQuantity = $this->cartService->getCartQuantity();
-        return $this->render('home.html.twig', [
+
+        return $this->render('header.html.twig', [
             'cartQuantity' => $cartQuantity,
         ]);
     }
+
 
     #[Route('/goods-page/{slug}', name: 'app_goodsPage')]
     public function goodsPage(Goods $goods): Response

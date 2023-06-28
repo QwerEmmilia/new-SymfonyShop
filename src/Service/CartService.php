@@ -2,20 +2,21 @@
 
 namespace App\Service;
 
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class CartService
 {
-    private $session;
+    private $requestStack;
 
-    public function __construct(SessionInterface $session)
+    public function __construct(RequestStack $requestStack)
     {
-        $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
     public function getCartQuantity(): int
     {
-        $cart = $this->session->get('cart', []);
+        $session = $this->requestStack->getSession();
+        $cart = $session->get('cart', []);
         $cartQuantity = 0;
         foreach ($cart as $item) {
             $cartQuantity += $item['quantity'];

@@ -36,6 +36,10 @@
 
 }
 
+.nav-link {
+    position: relative;
+}
+
 .navbar-nav .nav-link {
     font-size: var(--font-size);
     font-weight: 500;
@@ -52,15 +56,21 @@
     color: var(--hover-color);
 }
 
-.badge {
-    display: inline-block;
-    background-color: red;
-    color: white;
-    font-size: 12px;
-    border-radius: 50%;
-    padding: 2px 6px;
+.badge-quantity {
+    position: absolute;
+    bottom: 4px;
+    left: 17px;
+    background-color: #ff9900;
+    color: #ffffff;
+    border-radius: 35%;
+    padding: 0 4px 0 4px;
+    font-size: 9px;
+    border: #FFFFFF 3px solid;
 }
 
+.cart-quantity {
+    font-weight: bold;
+}
 
 .ul2 {
     margin-left: auto;
@@ -248,4 +258,3 @@
     margin-left: 16%;
     align-self: flex-start;
 }
-
