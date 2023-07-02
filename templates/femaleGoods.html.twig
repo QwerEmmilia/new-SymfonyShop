@@ -5,8 +5,11 @@
 {% endblock %}
 
 {% block body %}
-    <p class="route-goods">SHOP / Для всіх / Аксесуари</p>
-    <h5 class="title-goods">Аксесуари</h5>
+    {% if type is not null %}
+        <h5 class="title-goods">{{ type }}</h5>
+    {% else %}
+        <h5 class="title-goods">ДЛЯ НЕЇ</h5>
+    {% endif %}
     <div class="container-fluids">
         <button id="toggle-filters">Ф<br>І<br>Л<br>Ь<br>Т<br>Е<br>Р</button>
         <div class="sidebar" id="sidebar">
@@ -16,11 +19,11 @@
                         <li class="li-a-menu">
                             <a class="a-menu-filter">Одяг</a>
                             <ul class="filter-list">
-                                <li>Футболки</li>
+                                <li><a href="/female/t-shirt">Футболка</a></li>
                                 <li>Кофти</li>
                                 <li>Худі</li>
-                                <li>Штани</li>
-                                <li>Штани</li>
+                                <li><a href="/female/Pants">Штани</a></li>
+                                <li><a href="/female/outerwear">Пальто</a></li>
                             </ul>
                         </li>
                         <li class="li-a-menu">
@@ -53,7 +56,7 @@
                             <label class="sort-label" for="sort-select" onclick="toggleSortOptions()">Сортувати за:</label>
                             <div class="sort-options" id="sort-options">
                                 <div class="sort-option">
-                                    <input type="radio" id="sort-default" name="sort-option" value="default">
+                                    <input type="radio" id="sort-default" name="sort-option" value="default" checked>
                                     <label for="sort-default">За замовчуванням</label>
                                 </div>
                                 <div class="sort-option">
@@ -73,8 +76,8 @@
                             <div class="sort">
                                 <label class="sort-label" id="price-toggle" onclick="togglePriceOptions()">Ціна</label>
                             </div>
-                            <form action="{{ path('app_goodsList') }}" method="post">
-                            <div class="price-options" id="price-options" style="display: none;">
+                            <form method="post">
+                                <div class="price-options" id="price-options" style="display: none;">
                                     <input type="text" name="min_price" id="min-price" placeholder="Від" value="{{ minPrice }}">
                                     <input type="text" name="max_price" id="max-price" placeholder="До" value="{{ maxPrice }}">
                                     <button class="price-button" type="submit">Показати</button>
@@ -82,20 +85,23 @@
                             </form>
                         </div>
                     </turbo-frame>
+
                 </div>
-                <div class="goods-container">
+                <div class="goods-list-container">
                     <turbo-frame id="goods-list-turbo-{{ paginator.currentPage }}" target="_top">
                         <div class="row">
                             {% for goods in paginator.getCurrentPageResults() %}
-                                <div class="col col-md-3">
-                                    <a class="linkANon" href="{{ path('app_goodsPage', {'slug': goods.slug }) }}">
-                                        <div class="good-card" data-id="{{ goods.id }}">
-                                            <img src="{{ goods.image }}" alt="{{ goods.name }}">
-                                            <h4 class="product-title">{{ goods.name }}</h4>
-                                            <p class="price">{{ goods.price }} USD</p>
-                                        </div>
-                                    </a>
-                                </div>
+                                {% if goods.gender == "Female" %}
+                                    <div class="col col-md-3">
+                                        <a class="linkANon" href="{{ path('app_goodsPage', {'slug': goods.slug }) }}">
+                                            <div class="good-card" data-id="{{ goods.id }}">
+                                                <img src="{{ goods.image }}" alt="{{ goods.name }}">
+                                                <h4 class="product-title">{{ goods.name }}</h4>
+                                                <p class="price">{{ goods.price }} USD</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                {% endif %}
                             {% endfor %}
 
                             {% if paginator.hasNextPage %}
@@ -115,7 +121,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('js/menuFilter.js') }}"></script>
-    <script src="{{ asset('js/listGoodsSort.js') }}"></script>
+    <script src="{{ asset('js/femaleGoodsSort.js') }}"></script>
 {% endblock %}
 
 {% block footer %}

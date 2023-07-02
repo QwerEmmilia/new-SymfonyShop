@@ -1,10 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block header %}
-    {% include 'header.html.twig' %}
-{% endblock %}
+    {% block header %}
+        {% include 'header.html.twig' %}
+    {% endblock %}
+
 
 {% block body %}
+
+
+
     <div class="main">
         <div id="slider">
             <img class="imgSM-1" src="{{ asset('img/241810589_1259641347789699_7031140725086112762_n.jpg') }}" alt="Slide 1">
@@ -14,7 +18,7 @@
             <button class="subscribe-btn-slider">Подивитись новинки</button>
         </div>
         <div class="news-goods-block">
-            <a href="#" class="news-block-link news-block-women">
+            <a href="{{ path('app_goodsFemale') }}" class="news-block-link news-block-women">
                 <div class="news-block">
                     <img src="{{ asset('img/UA-BOX2-20230419.avif') }}" alt="Novelties for Women">
                 </div>
@@ -22,11 +26,11 @@
             <a class="news-block-link">
                 <div class="news-block">
                     <img src="{{ asset('img/UA-BOX1-20230419.avif') }}" alt="">
-                    <a><div class="text-overlay-left">Для неї</div></a>
-                    <a><div class="text-overlay-right">Для нього</div></a>
+                    <a href="{{ path('app_goodsFemale') }}"><div class="text-overlay-left">Для неї</div></a>
+                    <a href="{{ path('app_goodsMale') }}"><div class="text-overlay-right">Для нього</div></a>
                 </div>
             </a>
-            <a href="#" class="news-block-link news-block-men">
+            <a href="{{ path('app_goodsMale') }}" class="news-block-link news-block-men">
                 <div class="news-block ">
                     <img src="{{ asset('img/UA-BOX3-20230419.avif') }}" alt="Novelties for Men">
                 </div>
@@ -36,37 +40,18 @@
                 <h5 class="new-tmp">Новинки</h5>
                 <div id="carouselSlide" class="carousel">
                     {% for good in goods|slice(-10, none) %}
-                        <a href="{{ path('app_goodsPage', {slug: good.slug}) }}">
-                    <div class="carousel-slide" >
-                            <div class="product-block">
-                                <img src="{{ good.image }}" alt="New Goods">
-                                <div class="name-product">{{ good.name }}</div>
-                                <p class="price">${{ good.price }}</p>
-                            </div>
-                    </div>
-                        </a>
+                            <a href="{{ path('app_goodsPage', {slug: good.slug}) }}">
+                                <div class="carousel-slide" >
+                                    <div class="product-block">
+                                        <img src="{{ good.image }}" alt="New Goods">
+                                        <div class="name-product">{{ good.name }}</div>
+                                        <p class="price">${{ good.price }}</p>
+                                    </div>
+                                </div>
+                            </a>
                     {% endfor %}
                     <button class="custom-prev-btn"><i class='bx bx-chevron-right bx-flip-horizontal' ></i></button>
                     <button class="custom-next-btn"><i class='bx bx-chevron-right bx-flip-vertical' ></i></button>
-                </div>
-        </div>
-        <div class="container mt-3">
-                <h5 class="new-tmp">Кращі товари</h5>
-                <div id="carouselSlideTop" class="carousel">
-                    {% for good in goods|sort((a, b) => b.rating <=> a.rating)|slice(0, 10) %}
-                        <a href="{{ path('app_goodsPage', {slug: good.slug}) }}">
-                            <div class="carousel-slide">
-                                <div class="product-block">
-                                    <img src="{{ good.image }}" alt="Top Rated Goods">
-                                    <div class="name-product">{{ good.name }}</div>
-                                    <p class="rating">{{ good.rating }}</p>
-                                    <p class="price">${{ good.price }} USD</p>
-                                </div>
-                            </div>
-                        </a>
-                    {% endfor %}
-                    <button class="custom-prev-btn"><i class='bx bx-chevron-right bx-flip-horizontal'></i></button>
-                    <button class="custom-next-btn"><i class='bx bx-chevron-right bx-flip-vertical'></i></button>
                 </div>
         </div>
         <div class="container mt-5 mfg">
@@ -104,8 +89,6 @@
 
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.lazy/1.7.10/jquery.lazy.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.lazy/1.7.10/jquery.lazy.plugins.min.js"></script>
     <script src="{{ asset('js/slick-1.8.1/slick/slick.min.js') }}"></script>
     <script src="{{ asset('js/sliderMainPage.js') }}"></script>
     <script src="{{ asset('js/slickTrack.js') }}"></script>

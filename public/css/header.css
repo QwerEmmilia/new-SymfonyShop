@@ -57,15 +57,17 @@
 }
 
 .badge-quantity {
+    text-align: center;
+    width: 15px;
+    height: 15px;
     position: absolute;
-    bottom: 4px;
-    left: 17px;
-    background-color: #ff9900;
-    color: #ffffff;
-    border-radius: 35%;
-    padding: 0 4px 0 4px;
+    bottom: 10px;
+    left: 18px;
+    background-color: rgb(255, 255, 255);
+    color: #000000;
+    border-radius: 50%;
     font-size: 9px;
-    border: #FFFFFF 3px solid;
+    border: #ff9900 1px solid;
 }
 
 .cart-quantity {

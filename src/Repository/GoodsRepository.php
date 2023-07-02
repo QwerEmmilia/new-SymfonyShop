@@ -41,10 +41,17 @@ class GoodsRepository extends ServiceEntityRepository
         }
     }
 
-    public function getGoodsPaginator($page = 1, $perPage = 10, ?float $minPrice = null, ?float $maxPrice = null): Pagerfanta
+    public function getGoodsPaginator($page = 1, $perPage = 10, ?float $minPrice = null, ?float $maxPrice = null, ?string $sort = null, ?string $type = null, ?string $gender = null): Pagerfanta
     {
-        $queryBuilder = $this->createQueryBuilder('g')
-            ->orderBy('g.id', 'DESC');
+        $queryBuilder = $this->createQueryBuilder('g');
+
+        if ($sort === 'price-asc') {
+            $queryBuilder->orderBy('g.price', 'ASC');
+        } elseif ($sort === 'price-desc') {
+            $queryBuilder->orderBy('g.price', 'DESC');
+        } else {
+            $queryBuilder->orderBy('g.id', 'DESC');
+        }
 
         if ($minPrice !== null && $maxPrice !== null) {
             $queryBuilder
@@ -61,6 +68,19 @@ class GoodsRepository extends ServiceEntityRepository
                 ->andWhere('g.price <= :maxPrice')
                 ->setParameter('maxPrice', $maxPrice);
         }
+
+        if ($type !== null) {
+            $queryBuilder
+                ->andWhere('g.Type = :type')
+                ->setParameter('type', $type);
+        }
+
+        if ($gender !== null) {
+            $queryBuilder
+                ->andWhere('g.Gender = :gender')
+                ->setParameter('gender', $gender);
+        }
+
         $query = $queryBuilder->getQuery();
 
         $adapter = new QueryAdapter($query);
@@ -70,6 +90,17 @@ class GoodsRepository extends ServiceEntityRepository
         $paginator->setMaxPerPage($perPage);
 
         return $paginator;
+    }
+
+
+
+    public function searchByKeyword($keyword)
+    {
+        return $this->createQueryBuilder('g')
+            ->where('g.name LIKE :keyword')
+            ->setParameter('keyword', '%'.$keyword.'%')
+            ->getQuery()
+            ->getResult();
     }
 
 //    /**

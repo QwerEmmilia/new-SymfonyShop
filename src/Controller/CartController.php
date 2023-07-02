@@ -6,7 +6,6 @@ use App\Entity\Goods;
 use App\Entity\GoodsSize;
 use App\Entity\Order;
 use App\Entity\OrderDetails;
-use App\Entity\Size;
 use Doctrine\ORM\EntityManagerInterface;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\UX\Turbo\TurboBundle;
 
 class CartController extends AbstractController
 {
@@ -28,7 +28,6 @@ class CartController extends AbstractController
         $goodsId = $request->request->get('goods_id');
         $sizeId = $request->request->get('size_id');
         $goods = $this->entityManager->getRepository(Goods::class)->find($goodsId);
-
         $cart = $session->get('cart', []);
 
         $found = false;
@@ -72,8 +71,11 @@ class CartController extends AbstractController
 
         $this->addFlash('success',
             "Чудово! Товар було додано до кошика.");
-        return $this->redirectToRoute('app_goodsPage', [
-            'slug' => $goods->getSlug(),
+
+        $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
+
+        return $this->render('reviews.stream.html.twig',[
+            'cart' => $cart,
         ]);
     }
 
@@ -109,6 +111,8 @@ class CartController extends AbstractController
             'totalAmounts' => $totalAmounts,
             'goodsQuantity' => $goodsQuantity,
         ]);
+
+
     }
 
     #[Route('/update_cart/{action}', name: 'app_update_cart', methods: ['POST'])]
@@ -117,6 +121,9 @@ class CartController extends AbstractController
         $goodsId = $request->request->get('goods_id');
         $sizeId = $request->request->get('size_id');
         $cart = $session->get('cart', []);
+
+        $totalAmounts = 0;
+        $goodsQuantity = 0;
 
         foreach ($cart as $key => &$item) {
             if ($item['id'] == $goodsId && $item['sizeId'] == $sizeId) {
@@ -137,9 +144,19 @@ class CartController extends AbstractController
             }
         }
 
+        foreach ($cart as &$item) {
+            $totalAmounts += $item['price'] * $item['quantity'];
+            $goodsQuantity += $item['quantity'];
+        }
         $session->set('cart', $cart);
 
-        return $this->redirectToRoute('app_cart');
+        $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
+
+        return $this->render('reviews.stream.html.twig',[
+            'cart' => $cart,
+            'goodsQuantity' => $goodsQuantity,
+            'totalAmounts' => $totalAmounts,
+        ]);
     }
 
 

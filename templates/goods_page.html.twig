@@ -1,11 +1,15 @@
-{#{% extends 'base.html.twig' %}#}
+{% extends 'base.html.twig' %}
 
 {% block header %}
     {% include 'header.html.twig' %}
 {% endblock %}
 
 {% block body %}
+    <button onclick="history.back()">Назад</button>
     <div class="container">
+        <div class="back-button">
+            <button onclick="history.back()" class="back-btn"><i class='bx bx-arrow-back' style='color:black'></i> Назад</button>
+        </div>
         <div class="slider-container">
             <div class="thumbnail-images">
                 <img class="thumbnail" src="{{ goods.getImage }}" alt="Thumbnail 1">
@@ -21,7 +25,7 @@
             <div class="product-info">
                 <h2 class="product-title">{{ goods.getName }}</h2>
                 <p class="product-price">{{ goods.getPrice }} USD</p>
-                <turbo-frame id="buy-button-turbo">
+                <turbo-frame id="buy-button-turbo" data-target="turbo-quantity-icon">
                     <div class="product-sizes">
                         <p>Розмір</p>
                         {% for goodsSize in goods.getGoodsSizes %}
@@ -49,19 +53,9 @@
                                     </div>
                                 </div>
                             {% endfor %}
-                            {% for message in app.flashes('success') %}
-                                <script>document.body.style.overflow = 'hidden';</script>
-                                <div class="success-yes-goods" onclick="this.remove(); document.body.style.overflow = 'auto';">
-                                    <div class="success-popup">
-                                        <div class="success-icon">
-                                            <i class='bx bx-check-circle'></i>
-                                        </div>
-                                        <h5 class="yep">Успіх!</h5>
-                                        <div class="success-message">{{ message }}</div>
-                                        <div class="end-success-message">Закрити</div>
-                                    </div>
-                                </div>
-                            {% endfor %}
+                            <turbo-frame id="success-turbo">
+
+                            </turbo-frame>
                             {% if hasAvailableSizes %}
                                 <button type="submit" class="add-to-cart-btn" id="add-to-cart-btn"><i class='bx bx-shopping-bag'></i> Додати у кошик</button>
                             {% else %}
@@ -112,7 +106,7 @@
     <script src="{{ asset('js/activeOpis.js') }}"></script>
     <script src="{{ asset('js/slickTrack.js') }}"></script>
     <script src="{{ asset('js/goodBuy.js') }}"></script>
-    <script >addSizePillEventListeners();</script>
+    <script>addSizePillEventListeners();</script>
 
 {% endblock %}
 

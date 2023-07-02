@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+    {% include 'header.html.twig' %}
+{% endblock %}
+
+{% block body %}
+
+    <div class="goods-container mt-5">
+        {% if results is not empty %}
+            <h1>Пошук - {{ keyword }}</h1>
+            <div class="row">
+                {% for result in results %}
+                    <div class="col col-md-3">
+                        <a class="linkANon" href="{{ path('app_goodsPage', {'slug': result.slug }) }}">
+                            <div class="good-card" data-id="{{ result.id }}">
+                                <img src="{{ result.image }}" alt="{{ result.name }}">
+                                <h4 class="product-title">{{ result.name }}</h4>
+                                <p class="price">{{ result.price }} USD</p>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="not-found-search">
+                <img src="{{ asset('img/no-discount-commercial-interface-symbol-of-a-label-with-a-cross.png') }}" alt="not-goods-search">
+                <p class="not-found">Не знайдено результатів по запросу: <em>{{ keyword }}</em></p>
+                <p class="hint">Перевірте правильність написання або спробуй вписати загальну назву товару</p>
+            </div>
+        {% endif %}
+    </div>
+
+
+
+{% endblock %}
+
+{% block footer %}
+    {% include 'footer.html.twig' %}
+{% endblock %}

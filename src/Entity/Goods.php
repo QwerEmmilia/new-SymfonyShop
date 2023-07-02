@@ -28,9 +28,6 @@ class Goods
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $price = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 2, scale: 1, nullable: true)]
-    private ?string $rating = null;
-
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
@@ -46,6 +43,12 @@ class Goods
 
     #[ORM\OneToMany(mappedBy: 'goodsId', targetEntity: GoodsSize::class)]
     private Collection $goodsSizes;
+
+    #[ORM\Column(length: 50)]
+    private ?string $Gender = null;
+
+    #[ORM\Column(length: 100)]
+    private ?string $Type = null;
 
     public function __construct()
     {
@@ -90,18 +93,6 @@ class Goods
     public function setPrice(string $price): self
     {
         $this->price = $price;
-
-        return $this;
-    }
-
-    public function getRating(): ?string
-    {
-        return $this->rating;
-    }
-
-    public function setRating(?string $rating): self
-    {
-        $this->rating = $rating;
 
         return $this;
     }
@@ -198,6 +189,30 @@ class Goods
                 $goodsSize->setGoodsId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->Gender;
+    }
+
+    public function setGender(string $Gender): static
+    {
+        $this->Gender = $Gender;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->Type;
+    }
+
+    public function setType(string $Type): static
+    {
+        $this->Type = $Type;
 
         return $this;
     }
