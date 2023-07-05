@@ -15,42 +15,40 @@ class SubscriptionController extends AbstractController
     private $entityManager;
     private $emailService;
 
-    public function  __construct(EntityManagerInterface $entityManager, EmailService $emailService) {
+    public function __construct(EntityManagerInterface $entityManager, EmailService $emailService)
+    {
         $this->entityManager = $entityManager;
         $this->emailService = $emailService;
     }
 
-    #[Route('/subscribe', name: 'app_subscribe')]
+    #[Route('/subscribe', name: 'app_subscribe', methods: ['POST'])]
     public function subscribe(Request $request): Response
     {
-        if ($request->isMethod('POST')) {
-            $email = $request->request->get('email');
-            $isMaleSubscriber = $request->request->get('maleSubscription');
-            $isFemaleSubscriber = $request->request->get('femaleSubscription');
+        $email = $request->request->get('email');
+        $isMaleSubscriber = $request->request->get('maleSubscription');
+        $isFemaleSubscriber = $request->request->get('femaleSubscription');
 
-            $isMaleSubscriber = isset($isMaleSubscriber) ? true : false;
-            $isFemaleSubscriber = isset($isFemaleSubscriber) ? true : false;
+        $isMaleSubscriber = isset($isMaleSubscriber) ? true : false;
+        $isFemaleSubscriber = isset($isFemaleSubscriber) ? true : false;
 
-            $existingSubscription = $this->entityManager->getRepository(Subscription::class)->findOneBy(['email' => $email]);
-            if ($existingSubscription) {
-                $this->addFlash('error',
-                    "Ця пошта вже підписана на росилку.");
-                return $this->redirectToRoute('app_main');
-            }
-
-            $subscribe = new Subscription();
-            $subscribe->setEmail($email);
-            $subscribe->setIsMaleSubscriber($isMaleSubscriber);
-            $subscribe->setIsFemaleSubscriber($isFemaleSubscriber);
-
-            $this->entityManager->persist($subscribe);
-            $this->entityManager->flush();
-
-            $this->emailService->sendSubscriptionNotification($email);
+        $existingSubscription = $this->entityManager->getRepository(Subscription::class)->findOneBy(['email' => $email]);
+        if ($existingSubscription) {
+            $this->addFlash('error', 'Ця пошта вже підписана на розсилку.');
+            return $this->redirectToRoute('app_main');
         }
 
-        $this->addFlash('success',
-            "Підписка успішно оформлена. Дякуємо!");
+        $subscription = new Subscription();
+        $subscription->setEmail($email);
+        $subscription->setIsMaleSubscriber($isMaleSubscriber);
+        $subscription->setIsFemaleSubscriber($isFemaleSubscriber);
+
+        $this->entityManager->persist($subscription);
+        $this->entityManager->flush();
+
+        $this->emailService->sendSubscriptionNotification($email);
+
+        $this->addFlash('success', 'Підписка успішно оформлена. Дякуємо!');
         return $this->redirectToRoute('app_main');
     }
 }
+

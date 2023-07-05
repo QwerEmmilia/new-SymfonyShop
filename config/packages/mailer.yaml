@@ -1,3 +1,3 @@
 framework:
     mailer:
-         dsn: 'smtp://smtp.mailgun.org:587?encryption=tls&auth_mode=login&username=testdevemailqwer@gmail.com&password=iyjpooywwzjelyur'
+        dsn: '%env(MAILER_DSN)%'
