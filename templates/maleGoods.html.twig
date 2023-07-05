@@ -10,7 +10,6 @@
     {% else %}
         <h5 class="title-goods">ДЛЯ НЬОГО</h5>
     {% endif %}
-
     <div class="container-fluids">
         <button id="toggle-filters">Ф<br>І<br>Л<br>Ь<br>Т<br>Е<br>Р</button>
         <div class="sidebar" id="sidebar">
@@ -86,22 +85,26 @@
                             </form>
                         </div>
                     </turbo-frame>
-
                 </div>
                 <div class="goods-list-container">
                     <turbo-frame id="goods-list-turbo-{{ paginator.currentPage }}" target="_top">
                         <div class="row">
                             {% for goods in paginator.getCurrentPageResults() %}
-                                    <div class="col col-md-3">
-                                        <a class="linkANon" href="{{ path('app_goodsPage', {'slug': goods.slug }) }}">
-                                            <div class="good-card" data-id="{{ goods.id }}">
-                                                <img src="{{ goods.image }}" alt="{{ goods.name }}">
-                                                <h4 class="product-title">{{ goods.name }}</h4>
-                                                <p class="price">{{ goods.price }} USD</p>
-                                            </div>
-                                        </a>
-                                    </div>
+                                <div class="col col-md-3">
+                                    <a class="linkANon" href="{{ path('app_goodsPage', {'slug': goods.slug }) }}">
+                                        <div class="good-card" data-id="{{ goods.id }}">
+                                            <img class="default-image" src="{{ goods.image }}" alt="{{ goods.name }}">
+                                            {% set hoverImage = goods.getGoodsImages()|first %}
+                                            {% if hoverImage %}
+                                                <img class="hover-image" src="{{ asset(hoverImage.getImages()) }}" alt="Goods Image">
+                                            {% endif %}
+                                            <h4 class="product-title">{{ goods.name }}</h4>
+                                            <p class="price">{{ goods.price }} USD</p>
+                                        </div>
+                                    </a>
+                                </div>
                             {% endfor %}
+
 
                             {% if paginator.hasNextPage %}
                                 <turbo-frame
@@ -121,6 +124,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('js/menuFilter.js') }}"></script>
     <script src="{{ asset('js/maleGoodsSort.js') }}"></script>
+
 {% endblock %}
 
 {% block footer %}

@@ -1,10 +1,5 @@
 .goods-container {
-    margin-top: 10rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+
 }
 
 .goods-container h1 {
@@ -13,56 +8,14 @@
     text-align: center;
     color: rgb(0, 0, 0);
     font-weight: bold;
-    padding: 0 10px 0 10px;
     border-left: black solid 7px;
     border-right: black solid 7px;
 }
 
-.goods-container .price {
-    color: rgba(0, 0, 0, 0.64);
-}
-
-.goods-container .row {
-    margin-top: 2rem;
-    margin-left: -0.5rem;
-    margin-right: -0.5rem;
-}
-
-.goods-container .col {
-    flex-basis: 18%;
-    margin-bottom: 2rem;
-    padding-left: 2rem;
-    padding-right: 0.5rem;
-    transition: transform 0.3s ease;
-}
-
-.goods-container .good-card {
-    text-align: center;
-}
-
-.goods-container .good-card img {
-    width: 330px;
-    height: 440px;
-
-}
-
-.goods-container .col:hover {
-    transform: scale(1.1);
-}
-
-.goods-container .good-card .product-title {
-    font-size: 1.2rem;
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
-}
-
-.goods-container .good-card .price {
-    font-weight: bold;
-    font-size: 1.2rem;
-}
-
 .not-found-search {
-    display: inline;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
     margin-top: 70px;
     margin-bottom: 20%;
 }
@@ -70,8 +23,7 @@
 .not-found-search img {
     width: 110px;
     height: 110px;
-    margin-bottom: 10%;
-    margin-left: 40%;
+    margin: 2% auto 50px auto;
 }
 
 .not-found-search em{

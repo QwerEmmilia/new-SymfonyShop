@@ -50,10 +50,17 @@ class Goods
     #[ORM\Column(length: 100)]
     private ?string $Type = null;
 
+    #[ORM\OneToMany(mappedBy: 'goodsId', targetEntity: Images::class)]
+    private Collection $goodsImages;
+
+    #[ORM\Column(length: 255)]
+    private ?string $code = null;
+
     public function __construct()
     {
         $this->orderDetails = new ArrayCollection();
         $this->goodsSizes = new ArrayCollection();
+        $this->goodsImages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -213,6 +220,48 @@ class Goods
     public function setType(string $Type): static
     {
         $this->Type = $Type;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Images>
+     */
+    public function getGoodsImages(): Collection
+    {
+        return $this->goodsImages;
+    }
+
+    public function addGoodsImage(Images $goodsImage): static
+    {
+        if (!$this->goodsImages->contains($goodsImage)) {
+            $this->goodsImages->add($goodsImage);
+            $goodsImage->setGoodsId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGoodsImage(Images $goodsImage): static
+    {
+        if ($this->goodsImages->removeElement($goodsImage)) {
+            // set the owning side to null (unless already changed)
+            if ($goodsImage->getGoodsId() === $this) {
+                $goodsImage->setGoodsId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): static
+    {
+        $this->code = $code;
 
         return $this;
     }

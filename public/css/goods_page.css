@@ -280,6 +280,17 @@
     cursor: pointer;
 }
 
+.end-success-message-sub {
+    margin-top: 10px;
+    padding-top: 5px;
+    padding-bottom: 10px;
+    font-size: 17px;
+    color: rgba(0, 0, 0, 0.62);
+    border-top: rgba(0, 0, 0, 0.24) 1px solid;
+    text-align: center;
+    cursor: pointer;
+}
+
 .yep {
     text-align: center;
 }

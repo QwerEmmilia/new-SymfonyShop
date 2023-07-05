@@ -91,17 +91,19 @@
                     <turbo-frame id="goods-list-turbo-{{ paginator.currentPage }}" target="_top">
                         <div class="row">
                             {% for goods in paginator.getCurrentPageResults() %}
-                                {% if goods.gender == "Female" %}
-                                    <div class="col col-md-3">
-                                        <a class="linkANon" href="{{ path('app_goodsPage', {'slug': goods.slug }) }}">
-                                            <div class="good-card" data-id="{{ goods.id }}">
-                                                <img src="{{ goods.image }}" alt="{{ goods.name }}">
-                                                <h4 class="product-title">{{ goods.name }}</h4>
-                                                <p class="price">{{ goods.price }} USD</p>
-                                            </div>
-                                        </a>
-                                    </div>
-                                {% endif %}
+                                <div class="col col-md-3">
+                                    <a class="linkANon" href="{{ path('app_goodsPage', {'slug': goods.slug }) }}">
+                                        <div class="good-card" data-id="{{ goods.id }}">
+                                            <img class="default-image" src="{{ goods.image }}" alt="{{ goods.name }}">
+                                            {% set hoverImage = goods.getGoodsImages()|first %}
+                                            {% if hoverImage %}
+                                                <img class="hover-image" src="{{ asset(hoverImage.getImages()) }}" alt="Goods Image">
+                                            {% endif %}
+                                            <h4 class="product-title">{{ goods.name }}</h4>
+                                            <p class="price">{{ goods.price }} USD</p>
+                                        </div>
+                                    </a>
+                                </div>
                             {% endfor %}
 
                             {% if paginator.hasNextPage %}
@@ -122,6 +124,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('js/menuFilter.js') }}"></script>
     <script src="{{ asset('js/femaleGoodsSort.js') }}"></script>
+    <script>
+    </script>
 {% endblock %}
 
 {% block footer %}

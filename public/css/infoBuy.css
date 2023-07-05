@@ -185,7 +185,6 @@
 .goods-code {
     font-size: 12px;
     font-weight: 300;
-    margin-bottom: 3px;
 }
 
 .price {
@@ -211,11 +210,11 @@
 .detail-order {
     font-size: 14px;
     color: #777;
-    margin-top: 3px;
+    margin-top: 10px;
 }
 
 .detail-order p {
-    margin: 3px 0;
+    margin: 1px 0;
 }
 
 .quantity-price {

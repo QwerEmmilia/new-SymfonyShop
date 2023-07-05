@@ -24,12 +24,21 @@ class SearchController extends AbstractController
     public function search(Request $request, GoodsRepository $goodsRepository): Response
     {
         $keyword = $request->query->get('keyword');
+        $page = $request->query->getInt('page', 1);
+        $perPage = 12;
+        $minPrice = $request->query->get('min_price');
+        $maxPrice = $request->query->get('max_price');
+        $sort = $request->query->get('sort');
+        $gender = $request->query->get('gender');
 
-        $results = $goodsRepository->searchByKeyword($keyword);
+        $results = $goodsRepository->searchByKeyword($keyword, $page, $perPage, $minPrice, $maxPrice, $sort, $gender);
+
 
         return $this->render('search_results.html.twig', [
             'results' => $results,
             'keyword' => $keyword,
+            'minPrice' => $minPrice,
+            'maxPrice' => $maxPrice,
         ]);
     }
 

@@ -146,7 +146,19 @@
 }
 
 .good-card {
-    text-align: center;
+    text-align: left;
+}
+
+.hover-image {
+    display: none;
+}
+
+.good-card:hover .default-image {
+    display: none;
+}
+
+.good-card:hover .hover-image {
+    display: block;
 }
 
 .linkANon{
@@ -164,8 +176,17 @@
     margin-bottom: 5px;
 }
 
+.good-card .product-title {
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: rgba(63, 56, 56, 0.93);
+}
+
 .good-card .price {
     font-weight: bold;
+    font-size: 17px;
+    color: #000000;
 }
 
 .fixed {

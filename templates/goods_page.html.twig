@@ -5,17 +5,16 @@
 {% endblock %}
 
 {% block body %}
-    <button onclick="history.back()">Назад</button>
+    <div class="back-button">
+        <button onclick="history.back()" class="back-btn"><i class='bx bx-arrow-back' style='color:black'></i> Назад</button>
+    </div>
     <div class="container">
-        <div class="back-button">
-            <button onclick="history.back()" class="back-btn"><i class='bx bx-arrow-back' style='color:black'></i> Назад</button>
-        </div>
         <div class="slider-container">
             <div class="thumbnail-images">
                 <img class="thumbnail" src="{{ goods.getImage }}" alt="Thumbnail 1">
-                <img class="thumbnail" src="{{ asset('img/5372n-03x-002-1-575375-2.jpg') }}" alt="Thumbnail 2">
-                <img class="thumbnail" src="{{ asset('img/5372n-03x-050-1-500745-8.jpg') }}" alt="Thumbnail 3">
-                <img class="thumbnail" src="{{ asset('img/5372n-03x-050-1-500745-8.jpg') }}" alt="Thumbnail 4">
+                    {% for image in images %}
+                        <img class="thumbnail" src="{{ image.images }}" alt="Thumbnail {{ goods.getName }}">
+                    {% endfor %}
             </div>
             <div class="product-details">
                 <div class="main-image">
@@ -105,8 +104,8 @@
     <script src="{{ asset('js/goodsSlider.js') }}"></script>
     <script src="{{ asset('js/activeOpis.js') }}"></script>
     <script src="{{ asset('js/slickTrack.js') }}"></script>
-    <script src="{{ asset('js/goodBuy.js') }}"></script>
     <script>addSizePillEventListeners();</script>
+    <script>initializeImageGallery();</script>
 
 {% endblock %}
 

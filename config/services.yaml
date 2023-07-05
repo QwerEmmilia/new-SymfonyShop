@@ -11,6 +11,10 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
+    App\Service\EmailService:
+        arguments:
+            $mailer: '@Symfony\Component\Mailer\MailerInterface'
+
     App\Service\CartService:
         arguments:
             $session: '@session'

@@ -5,33 +5,112 @@
 {% endblock %}
 
 {% block body %}
-
-    <div class="goods-container mt-5">
-        {% if results is not empty %}
-            <h1>Пошук - {{ keyword }}</h1>
-            <div class="row">
-                {% for result in results %}
-                    <div class="col col-md-3">
-                        <a class="linkANon" href="{{ path('app_goodsPage', {'slug': result.slug }) }}">
-                            <div class="good-card" data-id="{{ result.id }}">
-                                <img src="{{ result.image }}" alt="{{ result.name }}">
-                                <h4 class="product-title">{{ result.name }}</h4>
-                                <p class="price">{{ result.price }} USD</p>
+{%  if results is not empty %}
+    <h5 class="title-goods">Пошук - {{ keyword }}</h5>
+    <div class="container-fluids">
+        <div class="content" id="content">
+            <div class="goods">
+                <div class="sorting">
+                    <div class="sort-price">
+                        <div class="sort">
+                            <label class="sort-label" for="sort-select" onclick="toggleSortOptions()">Сортувати за:</label>
+                            <div class="sort-options" id="sort-options">
+                                <div class="sort-option">
+                                    <input type="radio" id="sort-default" name="sort-option" value="default" checked>
+                                    <label for="sort-default">За замовчуванням</label>
+                                </div>
+                                <div class="sort-option">
+                                    <input type="radio" id="sort-asc" name="sort-option" value="price-asc" >
+                                    <label for="sort-asc">Зростанням ціни</label>
+                                </div>
+                                <div class="sort-option">
+                                    <input type="radio" id="sort-desc" name="sort-option" value="price-desc" >
+                                    <label for="sort-desc">Спаданням ціни</label>
+                                </div>
+                                <button class="apply-button" onclick="applySorting()">Застосувати</button>
                             </div>
-                        </a>
+                        </div>
                     </div>
-                {% endfor %}
+                    <turbo-frame id="turbo-sort-price">
+                        <div class="sort-price">
+                            <div class="sort">
+                                <label class="sort-label" id="price-toggle" onclick="togglePriceOptions()">Ціна</label>
+                            </div>
+                            <form method="post">
+                                <div class="price-options" id="price-options" style="display: none;">
+                                    <input type="text" name="min_price" id="min-price" placeholder="Від" value="{{ minPrice }}">
+                                    <input type="text" name="max_price" id="max-price" placeholder="До" value="{{ maxPrice }}">
+                                    <button class="price-button" type="submit">Показати</button>
+                                </div>
+                            </form>
+                        </div>
+                    </turbo-frame>
+                    <div class="sort-price">
+                        <div class="sort">
+                            <label class="sort-label" id="gender-toggle" for="gender-all" onclick="toggleGenderOptions()">Для кого:</label>
+                            <div class="sort-options" id="gender-options">
+                                <div class="sort-option">
+                                    <input type="radio" id="gender-all" name="gender-option" value="all" checked>
+                                    <label for="gender-all">Всіх</label>
+                                </div>
+                                <div class="sort-option">
+                                    <input type="radio" id="gender-female" name="gender-option" value="female">
+                                    <label for="gender-female">Жінок</label>
+                                </div>
+                                <div class="sort-option">
+                                    <input type="radio" id="gender-male" name="gender-option" value="male">
+                                    <label for="gender-male">Чоловіків</label>
+                                </div>
+                                <button class="apply-button" onclick="applyGender()">Застосувати</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="goods-list-container">
+                    <turbo-frame id="goods-list-turbo-{{ results.currentPage }}" target="_top">
+                        <div class="row">
+                            {% for result in results %}
+                                <div class="col col-md-3">
+                                    <a class="linkANon" href="{{ path('app_goodsPage', {'slug': result.slug }) }}">
+                                        <div class="good-card" data-id="{{ result.id }}">
+                                            <img class="default-image" src="{{ result.image }}" alt="{{ result.name }}">
+                                            {% set hoverImage = result.getGoodsImages()|first %}
+                                            {% if hoverImage %}
+                                                <img class="hover-image" src="{{ asset(hoverImage.getImages()) }}" alt="Goods Image">
+                                            {% endif %}
+                                            <h4 class="product-title">{{ result.name }}</h4>
+                                            <p class="price">{{ result.price }} USD</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            {% endfor %}
+
+
+                            {% if results.hasNextPage %}
+                                <turbo-frame
+                                        id="goods-list-turbo-{{ results.nextPage }}"
+                                        src="{{ pagerfanta_page_url(results, results.NextPage) }}"
+                                        loading="lazy"
+                                        target="_top">
+                                </turbo-frame>
+                            {% endif %}
+                        </div>
+                    </turbo-frame>
+                </div>
             </div>
-        {% else %}
-            <div class="not-found-search">
-                <img src="{{ asset('img/no-discount-commercial-interface-symbol-of-a-label-with-a-cross.png') }}" alt="not-goods-search">
-                <p class="not-found">Не знайдено результатів по запросу: <em>{{ keyword }}</em></p>
-                <p class="hint">Перевірте правильність написання або спробуй вписати загальну назву товару</p>
-            </div>
-        {% endif %}
+        </div>
     </div>
 
+{% else %}
+    <div class="not-found-search">
+        <img src="{{ asset('img/no-discount-commercial-interface-symbol-of-a-label-with-a-cross.png') }}" alt="not-goods-search">
+        <p class="not-found">Не знайдено результатів по запросу: <em>{{ keyword }}</em></p>
+        <p class="hint">Перевірте правильність написання або спробуй вписати загальну назву товару</p>
+    </div>
+{% endif %}
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ asset('js/searchGoodsSort.js') }}"></script>
 
 {% endblock %}
 

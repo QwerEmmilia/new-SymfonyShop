@@ -204,6 +204,7 @@ class CartController extends AbstractController
         $newOrder->setTotalQuantity($goodsTotal);
         $newOrder->setTotalAmount($totalAmount);
         $newOrder->setOrderDate(new DateTime());
+        $newOrder->setStatus('Пітверджено');
 
 
         $this->entityManager->persist($newOrder);

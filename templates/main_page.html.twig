@@ -6,9 +6,6 @@
 
 
 {% block body %}
-
-
-
     <div class="main">
         <div id="slider">
             <img class="imgSM-1" src="{{ asset('img/241810589_1259641347789699_7031140725086112762_n.jpg') }}" alt="Slide 1">
@@ -59,26 +56,54 @@
                 <div class="newsletter-content">
                     <h1 class="newsletter-title">Підпишіться на нашу розсилку</h1>
                     <h5 class="newsletter-text">Підпишіться на нашу розсилку, щоб отримати спеціальні пропозиції та оновлення про нові товари</h5>
-                    <form class="newsletter-form" action="/subscribe" method="post">
-                        <div class="newsletter-category">
-                            <span>Оберіть категорію, яка вас цікавить:</span>
-                            <label>
-                                <input type="checkbox" name="category[]" value="men">
-                                Чоловіки
+                    <turbo-frame id="turbo-subscribe-form">
+                        {% for message in app.flashes('error') %}
+                            <script>document.body.style.overflow = 'hidden';</script>
+                            <div class="error-no-goods" onclick="this.remove(); document.body.style.overflow = 'auto';">
+                                <div class="error-popup">
+                                    <div class="error-icon">
+                                        <i class='bx bx-error-alt'></i>
+                                    </div>
+                                    <h5 class="ops">Йой!</h5>
+                                    <div class="error-message">{{ message }}</div>
+                                    <div class="end-error-message">Закрити</div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% for message in app.flashes('success') %}
+                            <script>document.body.style.overflow = 'hidden';</script>
+                            <div class="success-yes-goods" onclick="this.remove(); document.body.style.overflow = 'auto';">
+                                <div class="success-popup">
+                                    <div class="success-icon">
+                                        <i class='bx bx-check-circle'></i>
+                                    </div>
+                                    <h5 class="yep">Успіх!</h5>
+                                    <div class="success-message">{{ message }}</div>
+                                    <div class="end-success-message-sub">Закрити</div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <form class="newsletter-form" action="{{ path('app_subscribe') }}" method="post">
+                            <div class="newsletter-category">
+                                <span>Оберіть категорію, яка вас цікавить:</span>
+                                <label for="maleSubscription">
+                                    <input type="checkbox" name="maleSubscription" value="men">
+                                    Чоловіки
+                                </label>
+                                <label for="femaleSubscription">
+                                    <input type="checkbox" name="femaleSubscription" value="women">
+                                    Жінки
+                                </label>
+                            </div>
+                            <p>Можна вибрати обидві категорії</p>
+                                <input type="email" class="newsletter-input" id="email" name="email" placeholder="Введіть вашу електронну адресу" required>
+                            <button type="submit" class="newsletter-submit">Підписатися</button>
+                            <label class="newsletter-terms mt-2">
+                                <input type="checkbox" class="m-lg-1" name="terms" required>
+                                Я приймаю правила та умови розсилки <a href="#">Політика конфіденційності</a>
                             </label>
-                            <label>
-                                <input type="checkbox" name="category[]" value="women">
-                                Жінки
-                            </label>
-                        </div>
-                        <p>Можна вибрати обидві категорії</p>
-                        <input type="email" class="newsletter-input" name="email" placeholder="Введіть вашу електронну адресу" required>
-                        <button type="submit" class="newsletter-submit">Підписатися</button>
-                        <label class="newsletter-terms mt-2">
-                            <input type="checkbox" class="m-lg-1" name="terms" required>
-                            Я приймаю правила та умови розсилки <a href="#">Політика конфіденційності</a>
-                        </label>
-                    </form>
+                        </form>
+                    </turbo-frame>
                 </div>
                 <div class="newsletter-image">
                     <img src="{{ asset('img/Blank 3 Grids Collage.png') }}" alt="Newsletter Image">
@@ -93,6 +118,9 @@
     <script src="{{ asset('js/sliderMainPage.js') }}"></script>
     <script src="{{ asset('js/slickTrack.js') }}"></script>
     <script src="{{ asset('js/activeSizes.js') }}"></script>
+    <script src="{{ asset('js/goodsSlider.js') }}"></script>
+    <script src="{{ asset('js/subscription.js') }}"></script>
+
 
 {% endblock %}
 
