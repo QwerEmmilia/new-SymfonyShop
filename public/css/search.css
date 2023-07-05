@@ -1,0 +1,43 @@
+.goods-container {
+
+}
+
+.goods-container h1 {
+    font-size: 2.4rem;
+    margin: 25px 0 1rem 0;
+    text-align: center;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    border-left: black solid 7px;
+    border-right: black solid 7px;
+}
+
+.not-found-search {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 70px;
+    margin-bottom: 20%;
+}
+
+.not-found-search img {
+    width: 110px;
+    height: 110px;
+    margin: 2% auto 50px auto;
+}
+
+.not-found-search em{
+    padding-left: 10px;
+    font-size: 1.4rem;
+}
+
+.not-found {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 0.3rem;
+}
+
+.hint {
+    font-size: 1.1rem;
+    text-align: center;
+}

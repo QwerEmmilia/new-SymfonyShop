@@ -1,0 +1,29 @@
+<turbo-stream action="update" target="goods-quick-stats">
+    <template>
+        {% include 'quicStats.html.twig' %}
+    </template>
+</turbo-stream>
+
+<turbo-stream action="replace" target="goods-quick-stats2">
+    <template>
+        {% include '_cart.html.twig' %}
+    </template>
+</turbo-stream>
+
+<turbo-stream action="replace" target="success-turbo">
+    <template>
+        {% for message in app.flashes('success') %}
+            <script>document.body.style.overflow = 'hidden';</script>
+            <div class="success-yes-goods" onclick="this.remove(); document.body.style.overflow = 'auto';">
+                <div class="success-popup">
+                    <div class="success-icon">
+                        <i class='bx bx-check-circle'></i>
+                    </div>
+                    <h5 class="yep">Успіх!</h5>
+                    <div class="success-message">{{ message }}</div>
+                    <div class="end-success-message">Закрити</div>
+                </div>
+            </div>
+        {% endfor %}
+    </template>
+</turbo-stream>

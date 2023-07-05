@@ -1,7 +1,24 @@
 .slider-container {
     display: flex;
-    margin-top: 5%;
+    margin-top: 2%;
 }
+
+.back-button {
+    margin-top: 30px;
+    text-align: left;
+}
+
+.back-btn {
+    padding: 10px 50px;
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    text-transform: uppercase;
+    text-align: center;
+}
+
 
 .thumbnail-images {
     display: flex;
@@ -255,6 +272,17 @@
 .end-success-message {
     margin-top: 20px;
     padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 17px;
+    color: rgba(0, 0, 0, 0.62);
+    border-top: rgba(0, 0, 0, 0.24) 1px solid;
+    text-align: center;
+    cursor: pointer;
+}
+
+.end-success-message-sub {
+    margin-top: 10px;
+    padding-top: 5px;
     padding-bottom: 10px;
     font-size: 17px;
     color: rgba(0, 0, 0, 0.62);

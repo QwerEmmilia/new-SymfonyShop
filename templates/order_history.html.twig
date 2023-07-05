@@ -31,7 +31,7 @@
                             <p class="order-date">{{ order.orderDate|date('d F Y H:i') }}</p>
                             <p class="quantity-order-all">{{ order.totalQuantity }}</p>
                             <p class="order-total">{{ order.totalAmount }} USD</p>
-                            <p class="status-order">Виконано</p>
+                            <p class="status-order">{{ order.status }}</p>
                             <i class="toggle-arrow fas fa-chevron-up"></i>
                         </div>
                     </div>
@@ -49,12 +49,11 @@
                                         <div>
                                             <a class="linkANon" href="{{ path('app_goodsPage', {'slug': goods.slug }) }}">
                                                 <p class="goods-name">{{ goods.name }}</p>
-                                                <p class="goods-code">C5FSDA4-FDS4DA</p>
+                                                <p class="goods-code">Код товару: {{ goods.code }}</p>
                                             </a>
                                         </div>
                                         <div class="detail-order">
-                                            <p>Розмір: M</p>
-                                            <p>Колір: black</p>
+                                            <p>Розмір: {{ orderDetail.size}}</p>
                                             <p class="quantity-order">Кількість: {{ orderDetail.purchaseQuantity }}</p>
                                         </div>
                                         <div class="quantity-price">

@@ -1,0 +1,132 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+    {% include 'header.html.twig' %}
+{% endblock %}
+
+{% block body %}
+    {% if type is not null %}
+        <h5 class="title-goods">{{ typeTranslations[type] }}</h5>
+    {% else %}
+        <h5 class="title-goods">ДЛЯ НЬОГО</h5>
+    {% endif %}
+    <div class="container-fluids">
+        <button id="toggle-filters">Ф<br>І<br>Л<br>Ь<br>Т<br>Е<br>Р</button>
+        <div class="sidebar" id="sidebar">
+            <div class="filters" id="filters">
+                <div class="filter-group">
+                    <ul>
+                        <li class="li-a-menu">
+                            <a class="a-menu-filter">Одяг</a>
+                            <ul class="filter-list">
+                                <li><a href="/male/t-shirt">Футболка</a></li>
+                                <li>Кофти</li>
+                                <li>Худі</li>
+                                <li>Штани</li>
+                                <li>Штани</li>
+                            </ul>
+                        </li>
+                        <li class="li-a-menu">
+                            <a class="a-menu-filter">Взуття</a>
+                            <ul class="filter-list">
+                                <li>Кросівки</li>
+                                <li>Кеди</li>
+                            </ul>
+                        </li>
+                        <li class="li-a-menu">
+                            <a class="a-menu-filter">Аксесуари</a>
+                            <ul class="filter-list">
+                                <li>Шкарпетки</li>
+                                <li><a href="/male/hat">Кепки</a></li>
+                                <li>Шапка</li>
+                                <li>Окуляри</li>
+                                <li><a href="/male/backpack">Рюкзаки</a></li>
+                                <li>Браслети</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="content" id="content">
+            <div class="goods">
+                <div class="sorting">
+                    <div class="sort-price">
+                        <div class="sort">
+                            <label class="sort-label" for="sort-select" onclick="toggleSortOptions()">Сортувати за:</label>
+                            <div class="sort-options" id="sort-options">
+                                <div class="sort-option">
+                                    <input type="radio" id="sort-default" name="sort-option" value="default" checked>
+                                    <label for="sort-default">За замовчуванням</label>
+                                </div>
+                                <div class="sort-option">
+                                    <input type="radio" id="sort-asc" name="sort-option" value="price-asc" >
+                                    <label for="sort-asc">Зростанням ціни</label>
+                                </div>
+                                <div class="sort-option">
+                                    <input type="radio" id="sort-desc" name="sort-option" value="price-desc" >
+                                    <label for="sort-desc">Спаданням ціни</label>
+                                </div>
+                                <button class="apply-button" onclick="applySorting()">Застосувати</button>
+                            </div>
+                        </div>
+                    </div>
+                    <turbo-frame id="turbo-sort-price">
+                        <div class="sort-price">
+                            <div class="sort">
+                                <label class="sort-label" id="price-toggle" onclick="togglePriceOptions()">Ціна</label>
+                            </div>
+                            <form method="post">
+                                <div class="price-options" id="price-options" style="display: none;">
+                                    <input type="text" name="min_price" id="min-price" placeholder="Від" value="{{ minPrice }}">
+                                    <input type="text" name="max_price" id="max-price" placeholder="До" value="{{ maxPrice }}">
+                                    <button class="price-button" type="submit">Показати</button>
+                                </div>
+                            </form>
+                        </div>
+                    </turbo-frame>
+                </div>
+                <div class="goods-list-container">
+                    <turbo-frame id="goods-list-turbo-{{ paginator.currentPage }}" target="_top">
+                        <div class="row">
+                            {% for goods in paginator.getCurrentPageResults() %}
+                                <div class="col col-md-3">
+                                    <a class="linkANon" href="{{ path('app_goodsPage', {'slug': goods.slug }) }}">
+                                        <div class="good-card" data-id="{{ goods.id }}">
+                                            <img class="default-image" src="{{ goods.image }}" alt="{{ goods.name }}">
+                                            {% set hoverImage = goods.getGoodsImages()|first %}
+                                            {% if hoverImage %}
+                                                <img class="hover-image" src="{{ asset(hoverImage.getImages()) }}" alt="Goods Image">
+                                            {% endif %}
+                                            <h4 class="product-title">{{ goods.name }}</h4>
+                                            <p class="price">{{ goods.price }} USD</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            {% endfor %}
+
+
+                            {% if paginator.hasNextPage %}
+                                <turbo-frame
+                                        id="goods-list-turbo-{{ paginator.nextPage }}"
+                                        src="{{ pagerfanta_page_url(paginator, paginator.NextPage) }}"
+                                        loading="lazy"
+                                        target="_top">
+                                </turbo-frame>
+                            {% endif %}
+                        </div>
+                    </turbo-frame>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ asset('js/menuFilter.js') }}"></script>
+    <script src="{{ asset('js/maleGoodsSort.js') }}"></script>
+
+{% endblock %}
+
+{% block footer %}
+    {% include 'footer.html.twig' %}
+{% endblock %}

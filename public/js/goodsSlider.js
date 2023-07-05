@@ -1,4 +1,4 @@
-window.addEventListener('DOMContentLoaded', (event) => {
+function initializeImageGallery() {
     const thumbnails = document.querySelectorAll('.thumbnail');
     const mainImage = document.getElementById('mainImage');
 
@@ -13,10 +13,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
             });
             thumbnail.classList.add('selected-thumbnail');
         });
-
-        // За замовчуванням виділяємо перше мініатюрне зображення
-        if (index === 0) {
-            thumbnail.classList.add('selected-thumbnail');
-        }
     });
+
+    // За замовчуванням виділяємо перше мініатюрне зображення
+    thumbnails[0].classList.add('selected-thumbnail');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initializeImageGallery();
 });

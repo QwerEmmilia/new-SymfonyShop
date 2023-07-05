@@ -36,6 +36,10 @@
 
 }
 
+.nav-link {
+    position: relative;
+}
+
 .navbar-nav .nav-link {
     font-size: var(--font-size);
     font-weight: 500;
@@ -50,6 +54,24 @@
 
 .nav-item:hover > a.nav-link {
     color: var(--hover-color);
+}
+
+.badge-quantity {
+    text-align: center;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    bottom: 10px;
+    left: 18px;
+    background-color: rgb(255, 255, 255);
+    color: #000000;
+    border-radius: 50%;
+    font-size: 9px;
+    border: #ff9900 1px solid;
+}
+
+.cart-quantity {
+    font-weight: bold;
 }
 
 .ul2 {
@@ -238,4 +260,3 @@
     margin-left: 16%;
     align-self: flex-start;
 }
-

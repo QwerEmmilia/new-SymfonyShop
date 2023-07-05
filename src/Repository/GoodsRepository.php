@@ -41,11 +41,96 @@ class GoodsRepository extends ServiceEntityRepository
         }
     }
 
-    public function getGoodsPaginator($page = 1, $perPage = 10): Pagerfanta
+    public function getGoodsPaginator($page = 1, $perPage = 10, ?float $minPrice = null, ?float $maxPrice = null, ?string $sort = null, ?string $type = null, ?string $gender = null): Pagerfanta
     {
-        $query = $this->createQueryBuilder('g')
-            ->orderBy('g.id', 'DESC')
-            ->getQuery();
+        $queryBuilder = $this->createQueryBuilder('g');
+
+        if ($sort === 'price-asc') {
+            $queryBuilder->orderBy('g.price', 'ASC');
+        } elseif ($sort === 'price-desc') {
+            $queryBuilder->orderBy('g.price', 'DESC');
+        } else {
+            $queryBuilder->orderBy('g.id', 'DESC');
+        }
+
+        if ($minPrice !== null && $maxPrice !== null) {
+            $queryBuilder
+                ->andWhere('g.price >= :minPrice')
+                ->andWhere('g.price <= :maxPrice')
+                ->setParameter('minPrice', $minPrice)
+                ->setParameter('maxPrice', $maxPrice);
+        } elseif ($minPrice !== null) {
+            $queryBuilder
+                ->andWhere('g.price >= :minPrice')
+                ->setParameter('minPrice', $minPrice);
+        } elseif ($maxPrice !== null) {
+            $queryBuilder
+                ->andWhere('g.price <= :maxPrice')
+                ->setParameter('maxPrice', $maxPrice);
+        }
+
+        if ($type !== null) {
+            $queryBuilder
+                ->andWhere('g.Type = :type')
+                ->setParameter('type', $type);
+        }
+
+        if ($gender !== null) {
+            $queryBuilder
+                ->andWhere('g.Gender = :gender')
+                ->setParameter('gender', $gender);
+        }
+
+        $query = $queryBuilder->getQuery();
+
+        $adapter = new QueryAdapter($query);
+        $paginator = new Pagerfanta($adapter);
+
+        $paginator->setCurrentPage($page);
+        $paginator->setMaxPerPage($perPage);
+
+        return $paginator;
+    }
+
+
+
+    public function searchByKeyword($keyword, $page = 1, $perPage = 10, ?float $minPrice = null, ?float $maxPrice = null, ?string $sort = null, ?string $gender = null)
+    {
+        $queryBuilder = $this->createQueryBuilder('g')
+            ->where('g.name LIKE :keyword')
+            ->setParameter('keyword', '%' . $keyword . '%');
+
+        if ($sort === 'price-asc') {
+            $queryBuilder->orderBy('g.price', 'ASC');
+        } elseif ($sort === 'price-desc') {
+            $queryBuilder->orderBy('g.price', 'DESC');
+        } else {
+            $queryBuilder->orderBy('g.id', 'DESC');
+        }
+
+        if ($minPrice !== null && $maxPrice !== null) {
+            $queryBuilder
+                ->andWhere('g.price >= :minPrice')
+                ->andWhere('g.price <= :maxPrice')
+                ->setParameter('minPrice', $minPrice)
+                ->setParameter('maxPrice', $maxPrice);
+        } elseif ($minPrice !== null) {
+            $queryBuilder
+                ->andWhere('g.price >= :minPrice')
+                ->setParameter('minPrice', $minPrice);
+        } elseif ($maxPrice !== null) {
+            $queryBuilder
+                ->andWhere('g.price <= :maxPrice')
+                ->setParameter('maxPrice', $maxPrice);
+        }
+
+        if ($gender !== null) {
+            $queryBuilder
+                ->andWhere('g.Gender = :gender')
+                ->setParameter('gender', $gender);
+        }
+
+        $query = $queryBuilder->getQuery();
 
         $adapter = new QueryAdapter($query);
         $paginator = new Pagerfanta($adapter);

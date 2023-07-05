@@ -34,6 +34,9 @@ class Order
     #[ORM\Column]
     private ?int $totalQuantity = null;
 
+    #[ORM\Column(length: 50)]
+    private ?string $status = null;
+
     public function __construct()
     {
         $this->OrderDetails = new ArrayCollection();
@@ -118,6 +121,18 @@ class Order
     public function setTotalQuantity(int $totalQuantity): static
     {
         $this->totalQuantity = $totalQuantity;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }
